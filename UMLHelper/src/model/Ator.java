@@ -5,9 +5,13 @@
  */
 package model;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,67 +23,176 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
+import java.beans.PropertyEditorManager;
+import java.util.Locale;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 
 /**
  *
  * @author Antonio
  */
-public class Ator extends Elemento {
+public class Ator extends JPanel {
 
     private Point initiPos = new Point(0, 0);
-    
+    int xPressed = 0;
+    int yPressed = 0;
+    private JLabel label;
+    private JTextField text;
+    //private Ator ator;
+    private Component dragged;
     
     
     public Ator(){        
         super();
-        
         try {
-            this.setImagem(ImageIO.read(Ator.class.getResourceAsStream("/res/ator.png")));
-            this.setText("Ator");          
+            this.setLayout(new BorderLayout());
+            this.label = new JLabel();
+            this.text = new JTextField("Ator");
+            this.label.setLabelFor(this.text);
+            this.text.setEditable(false);
+            //this.text.setEnabled(false);
+            this.text.setBorder(null);
+            this.text.setBackground(Color.white);
+            
             this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            this.setSize(80, 150);
+            this.setMaximumSize(new Dimension(80, 150));
+            this.setImagem(ImageIO.read(Ator.class.getResourceAsStream("/res/ator.png")));       
+            this.setBackground(Color.white);
+            this.add(this.label, BorderLayout.NORTH);
+            this.add(this.text, BorderLayout.SOUTH);
+            
             initListeners();
-            this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            //this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            
         } catch (IOException ex) {
             Logger.getLogger(Ator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
-   
-    /*
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        g.drawString(this.getText(), 100, 100);
-        g.drawImage(this.getImagem(), 0, 0, this);
-    }*/
+    public void setImagem(BufferedImage imagem) {
+        this.label.setIcon(new ImageIcon(imagem));
+    }
+    
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(10,10); //To change body of generated methods, choose Tools | Templates.
+        return new Dimension(80,150); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void removerAtor(){
+        Container cont = this.getParent();
+        cont.remove(this);
+        cont.repaint();
     }
     
     public void initListeners(){
+        this.text.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 ){
+                    text.setFocusable(true);
+                    text.setEditable(true);
+                    text.requestFocus();
+                }
+            }
+            
+        });
+        
+        this.text.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if ( e.getKeyCode() == KeyEvent.VK_ENTER ){
+                    text.setEditable(false);
+                    text.setFocusable(false);
+                }
+            }
+            
+        });
+        
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 ){
+                    text.setFocusable(true);
+                    text.setEditable(true);
+                    text.requestFocus();
+                }
+            }
+            
+        });
+            
+        
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == 3){
+                    JPopupMenu jPop = new JPopupMenu();
+                    JMenuItem jMenu = new JMenuItem("Deletar");
+                    jMenu.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //System.out.println("You're asking to remove me");
+                            removerAtor();                          
+                        }
+                    });
+                    jPop.add(jMenu);
+                    jPop.show(getParent(), getX()+75, getY());
+                }
+            }          
+        });
+        
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                initiPos = e.getPoint();
-                repaint();
+                xPressed = e.getX();
+                yPressed = e.getY();
+                //initiPos = dragged.getParent().getMousePosition();              
             }
             
         });
+        
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int dx = e.getX() - initiPos.x;
-                int dy = e.getY() - initiPos.y;
-                setLocation(getX() + dx, getY() + dy);
-                initiPos = e.getPoint();
-                repaint();
+                setLocation(getParent().getMousePosition(true).x - xPressed, getParent().getMousePosition(true).y - yPressed);               
+
             }
             
         });
+        /*
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                initiPos = null;
+                dragged = null;
+            }
+            
+        });
+        */
+        /*
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               
+            }      
+        });   */  
     }   
 }
