@@ -177,22 +177,6 @@ public class Ator extends JPanel {
             }
             
         });
-        /*
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                initiPos = null;
-                dragged = null;
-            }
-            
-        });
-        */
-        /*
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-               
-            }      
-        });   */  
+        
     }   
 }

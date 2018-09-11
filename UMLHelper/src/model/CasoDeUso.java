@@ -32,6 +32,8 @@ import javax.swing.JPopupMenu;
 public class CasoDeUso extends JLabel{
     private Point initiPos = new Point(0, 0);
     private boolean dragging = false;
+    int xPressed = 0;
+    int yPressed = 0;
     Ellipse2D.Double casoDeUso;
     
     public CasoDeUso(){
@@ -89,30 +91,18 @@ public class CasoDeUso extends JLabel{
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                initiPos = e.getPoint();
-                //repaint();
-                dragging = true;
+                xPressed = e.getX();
+                yPressed = e.getY();
             }
             
         });
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int dx = e.getX() - initiPos.x;
-                int dy = e.getY() - initiPos.y;
-                setLocation(getX() + dx, getY() + dy);
-                initiPos = e.getPoint();
-                if(dragging){
-                    repaint();
-                }
+               setLocation(getParent().getMousePosition(true).x - xPressed, getParent().getMousePosition(true).y - yPressed);               
             }
             
         });
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                dragging = false;
-            }  
-        });   
+         
     }   
 }
