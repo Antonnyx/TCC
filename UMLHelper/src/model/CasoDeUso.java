@@ -36,15 +36,28 @@ public class CasoDeUso extends JLabel{
     int yPressed = 0;
     Ellipse2D.Double casoDeUso;
     
+    
+    
     public CasoDeUso(){
         super();
         initListeners();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));       
         this.setSize(100, 100);
-        System.out.println("Im creating a use case");
+        //System.out.println("Im creating a use case");
         repaint();
     }
+
+    public Point getInitiPos() {
+        return initiPos;
+    }
+
+    public void setInitiPos(Point initiPos) {
+        this.initiPos = initiPos;
+    }
+    
+    
+    
     
     public void removerCasoDeUso(){
         Container cont = this.getParent();

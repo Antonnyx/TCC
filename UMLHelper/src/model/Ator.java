@@ -56,6 +56,15 @@ public class Ator extends JPanel {
     private JTextField text;
     //private Ator ator;
     private Component dragged;
+
+    public Point getInitiPos() {
+        return initiPos;
+    }
+
+    public void setInitiPos(Point initiPos) {
+        this.initiPos = initiPos;
+    }
+    
     
     
     public Ator(){        
@@ -77,7 +86,6 @@ public class Ator extends JPanel {
             this.setBackground(Color.white);
             this.add(this.label, BorderLayout.NORTH);
             this.add(this.text, BorderLayout.SOUTH);
-            
             initListeners();
             //this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             
@@ -97,11 +105,19 @@ public class Ator extends JPanel {
         return new Dimension(80,150); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void removerAtor(){
+    public void removerElemento(){
         Container cont = this.getParent();
         cont.remove(this);
         cont.repaint();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Ator ator = (Ator)obj;
+        return this.text.equals(ator.text);
+    }
+    
+    
     
     public void initListeners(){
         this.text.addMouseListener(new MouseAdapter() {
@@ -150,10 +166,20 @@ public class Ator extends JPanel {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //System.out.println("You're asking to remove me");
-                            removerAtor();                          
+                            removerElemento();                         
+                        }
+                    });
+                    JMenuItem jMenu2 = new JMenuItem("Mostra Pos");
+                    jMenu2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //System.out.println("You're asking to remove me");
+                            System.out.println("POS X: " + getX());                      
+                            System.out.println("POS Y: " + getY());                      
                         }
                     });
                     jPop.add(jMenu);
+                    jPop.add(jMenu2);
                     jPop.show(getParent(), getX()+75, getY());
                 }
             }          
@@ -177,6 +203,7 @@ public class Ator extends JPanel {
             }
             
         });
+        
         
     }   
 }

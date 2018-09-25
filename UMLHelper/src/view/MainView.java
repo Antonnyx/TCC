@@ -15,18 +15,31 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import model.Ator;
 import model.CasoDeUso;
+import model.Elemento;
 
 /**
  *
@@ -52,6 +65,7 @@ public class MainView extends javax.swing.JFrame {
         //panel.setSize(1000, 1000);
         //this.getContentPane().add();
         
+        
         this.setTitle("Teste");        
         this.pack();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -60,6 +74,8 @@ public class MainView extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,7 +93,15 @@ public class MainView extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         casoDeUso = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        tabPane = new javax.swing.JTabbedPane();
         panel = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        menuNovo = new javax.swing.JMenuItem();
+        menuSalvar = new javax.swing.JMenuItem();
+        menuImportar = new javax.swing.JMenuItem();
+        menuSair = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -119,39 +143,73 @@ public class MainView extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(casoDeUso)
-                .addGap(0, 186, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabel1.setText("Palettas");
-
-        panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 313, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 237, Short.MAX_VALUE)
         );
+
+        tabPane.addTab("tab1", panel);
+
+        jMenu1.setText("Arquivo");
+
+        menuNovo.setText("Novo Modelo");
+        menuNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuNovoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuNovo);
+
+        menuSalvar.setText("Salvar Modelo");
+        menuSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSalvarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuSalvar);
+
+        menuImportar.setText("Importar Modelo");
+        jMenu1.add(menuImportar);
+
+        menuSair.setText("Sair");
+        menuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSairActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuSair);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelObjects, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tabPane))
+                    .addComponent(jLabel1))
+                .addGap(174, 174, 174))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,26 +218,95 @@ public class MainView extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelObjects, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 36, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(tabPane)
+                    .addComponent(panelObjects, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         panel.add(new Ator());
         panel.updateUI();
+        tabPane.updateUI();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void casoDeUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_casoDeUsoActionPerformed
         panel.add(new CasoDeUso());
         panel.repaint();
     }//GEN-LAST:event_casoDeUsoActionPerformed
+
+    private void menuSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSalvarActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(null, "Deseja salvar: " + tabPane.getTitleAt(0));
+        if ( resposta == JOptionPane.YES_OPTION ){
+            List<Ator> listaAtores = new ArrayList<Ator>();
+            List<CasoDeUso> listaCasosDeUso = new ArrayList<CasoDeUso>();
+            System.out.println("Quantidade de elementos: " + panel.getComponents().length);
+            for(Component component: panel.getComponents()){
+                System.out.println(component.getClass());
+                if(component instanceof Ator){
+                    Ator ator = (Ator) component;
+
+                    ator.setInitiPos(new Point(ator.getX(), ator.getY()));
+                    listaAtores.add(ator);
+                }
+                if(component instanceof CasoDeUso){
+                    CasoDeUso casoDeUso = (CasoDeUso) component;
+
+                    casoDeUso.setInitiPos(new Point(casoDeUso.getX(), casoDeUso.getY()));
+                    listaCasosDeUso.add(casoDeUso);
+                }
+
+            }
+
+            System.out.println("Lista de Elementos");
+            for(Ator ator: listaAtores){
+                System.out.println("X: " + ator.getInitiPos().x + " Y: " + ator.getInitiPos().y);
+            }
+            for(CasoDeUso caso: listaCasosDeUso){
+                System.out.println("X: " + caso.getInitiPos().x + " Y: " + caso.getInitiPos().y);
+            }
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new java.io.File("."));
+            File file = new File(tabPane.getTitleAt(0)+".config");
+            chooser.setSelectedFile(file);
+            chooser.setDialogTitle("Escolha um local para salvar");
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setFileFilter(new  FileNameExtensionFilter("Config File (*.config)","config"));
+            int savedFile = chooser.showSaveDialog(chooser);
+            if (savedFile == JFileChooser.APPROVE_OPTION) {
+                System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
+                System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    for(Ator ator: listaAtores){
+                        String output = "Ator, " + ator.getInitiPos().x + " ," + ator.getInitiPos().y + "\n";
+                        writer.write(output);
+                    }
+                    writer.close();
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        
+    }//GEN-LAST:event_menuSalvarActionPerformed
+
+    private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_menuSairActionPerformed
+
+    private void menuNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoActionPerformed
+        String resposta = JOptionPane.showInputDialog(null, "Escolha o nome do novo arquivo");
+        System.out.println("Resposta: " + resposta);
+        tabPane.setTitleAt(0, resposta);
+    }//GEN-LAST:event_menuNovoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,10 +347,18 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton casoDeUso;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.MenuBar menuBar1;
+    private javax.swing.JMenuItem menuImportar;
+    private javax.swing.JMenuItem menuNovo;
+    private javax.swing.JMenuItem menuSair;
+    private javax.swing.JMenuItem menuSalvar;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelObjects;
+    private javax.swing.JTabbedPane tabPane;
     // End of variables declaration//GEN-END:variables
 }

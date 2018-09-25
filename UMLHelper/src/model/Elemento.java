@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.awt.Container;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -56,5 +57,9 @@ public class Elemento extends JLabel{
     public BufferedImage getImagem(){
         return imagem;
     }
+    
+
+    
+    
     
 }
