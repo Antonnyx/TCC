@@ -23,15 +23,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 /**
  *
  * @author Antonio
  */
-public class CasoDeUso extends JLabel{
+public class CasoDeUso extends JPanel{
     private Point initiPos = new Point(0, 0);
-    private boolean dragging = false;
     int xPressed = 0;
     int yPressed = 0;
     Ellipse2D.Double casoDeUso;
@@ -44,8 +44,6 @@ public class CasoDeUso extends JLabel{
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));       
         this.setSize(100, 100);
-        //System.out.println("Im creating a use case");
-        repaint();
     }
 
     public Point getInitiPos() {
@@ -55,9 +53,6 @@ public class CasoDeUso extends JLabel{
     public void setInitiPos(Point initiPos) {
         this.initiPos = initiPos;
     }
-    
-    
-    
     
     public void removerCasoDeUso(){
         Container cont = this.getParent();
@@ -70,7 +65,7 @@ public class CasoDeUso extends JLabel{
         return new Dimension(100,100); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
+    /*
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
@@ -79,7 +74,7 @@ public class CasoDeUso extends JLabel{
         casoDeUso = new Ellipse2D.Double(200, 200, 100, 150);
         g2.setColor(Color.red);
         g2.fill(casoDeUso);
-    }
+    }*/
     
     public void initListeners(){
         this.addMouseListener(new MouseAdapter() {

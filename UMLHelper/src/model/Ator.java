@@ -54,8 +54,6 @@ public class Ator extends JPanel {
     int yPressed = 0;
     private JLabel label;
     private JTextField text;
-    //private Ator ator;
-    private Component dragged;
 
     public Point getInitiPos() {
         return initiPos;
@@ -111,11 +109,13 @@ public class Ator extends JPanel {
         cont.repaint();
     }
 
+    /*
     @Override
     public boolean equals(Object obj) {
         Ator ator = (Ator)obj;
         return this.text.equals(ator.text);
     }
+*/
     
     
     
