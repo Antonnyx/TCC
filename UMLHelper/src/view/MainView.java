@@ -39,32 +39,28 @@ public class MainView extends javax.swing.JFrame {
      */
     public MainView() {
         initComponents();
-        initElements();
+        //initElements();
     }
-
     
+    public MainView(String nomeDiagrama){
+        super();
+        initComponents();
+        initElements();
+        tabPane.setTitleAt(0, nomeDiagrama);
+    }
+  
     private void initElements(){     
         
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setLayout(null);     
         panel.setBackground(Color.WHITE);       
-        //panel.setSize(1000, 1000);
-        //this.getContentPane().add();
-        
-        
+
         this.setTitle("Criar Diagrama de Caso de Uso");        
-        
-        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setSize(screenSize);        
-        //this.pack();
-        
+        this.setSize(screenSize);             
         this.setLocationRelativeTo(null);        
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
-        this.setVisible(true);
-        
-        
-        
+        this.setVisible(true); 
     }
     
     
@@ -223,13 +219,12 @@ public class MainView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    
     private void limparTela(){
         System.out.println("Limpar Tela");
         panel.removeAll();
         updateUI();
     }
+    
     private void updateUI(){
         panel.updateUI();
     }
@@ -238,7 +233,7 @@ public class MainView extends javax.swing.JFrame {
         System.out.println("Ator");
         Ator ator = new Ator();
         panel.add(ator);
-        panel.updateUI();
+        updateUI();
         
     }//GEN-LAST:event_jButton1MouseClicked
 
@@ -246,7 +241,7 @@ public class MainView extends javax.swing.JFrame {
         System.out.println("Caso de Uso");
         CasoDeUso casoDeUso = new CasoDeUso();
         panel.add(casoDeUso);
-        panel.updateUI();
+        updateUI();
     }//GEN-LAST:event_casoDeUsoMouseClicked
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
@@ -274,18 +269,20 @@ public class MainView extends javax.swing.JFrame {
                 try{
                     in = new BufferedReader(new FileReader(arquivo));
                     String line = null;
-                while((line = in.readLine()) != null){
-                    carregarElemento(line);
-                }
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }finally{                    
-                    try {
-                        in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    String titulo = in.readLine();
+                    carregarTitulo(titulo);
+                    while((line = in.readLine()) != null){
+                        carregarElemento(line);
                     }
-                }
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }finally{                    
+                        try {
+                            in.close();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
         }
     }//GEN-LAST:event_menuImportarActionPerformed
 
@@ -345,6 +342,7 @@ public class MainView extends javax.swing.JFrame {
                     System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
                     try {
                         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                        writer.write(tabPane.getTitleAt(0)+ "\n");
                         for(Ator ator: listaAtores){
                             String output = "Ator, " + ator.getInitiPos().x + " ," + ator.getInitiPos().y + "\n";
                             writer.write(output);
@@ -363,6 +361,10 @@ public class MainView extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_menuSalvarActionPerformed
 
+    private void carregarTitulo(String tituloDiagrama){
+        System.out.println("Titulo: " + tituloDiagrama);
+        tabPane.setTitleAt(0, tituloDiagrama);
+    }
     private void carregarElemento(String elementoString){
         String componente = elementoString.split(",")[0].trim();
         String posicaoX = elementoString.split(",")[1].trim();
@@ -374,8 +376,14 @@ public class MainView extends javax.swing.JFrame {
                 Ator ator = new Ator();                
                 panel.add(ator);
                 ator.setLocation(Integer.valueOf(posicaoX), Integer.valueOf(posicaoY));
-                panel.updateUI();
-                
+                updateUI();
+                break;
+            case "CasoDeUso":
+                CasoDeUso casoDeUso = new CasoDeUso();
+                panel.add(casoDeUso);
+                casoDeUso.setLocation(Integer.valueOf(posicaoX), Integer.valueOf(posicaoY));
+                updateUI();
+                break;
         }
     }
     /**
