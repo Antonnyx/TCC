@@ -57,7 +57,7 @@ public class EditorToolBar extends JToolBar
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createEmptyBorder(3, 3, 3, 3), getBorder()));
 		setFloatable(false);
-
+                /*
 		add(editor.bind("New", new NewAction(),
 				"/images/new.gif"));
 		add(editor.bind("Open", new OpenAction(),
@@ -92,6 +92,7 @@ public class EditorToolBar extends JToolBar
 				"/images/redo.gif"));
 
 		addSeparator();
+                */
 
 		// Gets the list of available fonts from the local graphics environment
 		// and adds some frequently used fonts at the beginning of the list
@@ -149,7 +150,7 @@ public class EditorToolBar extends JToolBar
 		});
 
 		addSeparator();
-
+                /*
 		add(editor.bind("Bold", new FontStyleAction(true),
 				"/images/bold.gif"));
 		add(editor.bind("Italic", new FontStyleAction(false),
@@ -172,15 +173,17 @@ public class EditorToolBar extends JToolBar
 		add(editor.bind("Font", new ColorAction("Font",
 				mxConstants.STYLE_FONTCOLOR),
 				"/images/fontcolor.gif"));
+                
 		add(editor.bind("Stroke", new ColorAction("Stroke",
 				mxConstants.STYLE_STROKECOLOR),
 				"/images/linecolor.gif"));
+              */  
 		add(editor.bind("Fill", new ColorAction("Fill",
 				mxConstants.STYLE_FILLCOLOR),
 				"/images/fillcolor.gif"));
 
 		addSeparator();
-
+                
 		final mxGraphView view = editor.getGraphComponent().getGraph()
 				.getView();
 		final JComboBox zoomCombo = new JComboBox(new Object[] { "400%",

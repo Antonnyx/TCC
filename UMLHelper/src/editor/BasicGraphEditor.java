@@ -60,6 +60,8 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.util.mxUndoableEdit.mxUndoableChange;
 import com.mxgraph.view.mxGraph;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class BasicGraphEditor extends JPanel
 {
@@ -754,11 +756,12 @@ public class BasicGraphEditor extends JPanel
 	 */
 	public JFrame createFrame(JMenuBar menuBar)
 	{
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setJMenuBar(menuBar);
-		frame.setSize(870, 640);
+		frame.setSize(screenSize);
 
 		// Updates the frame title
 		updateTitle();

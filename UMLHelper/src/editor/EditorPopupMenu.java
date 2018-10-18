@@ -27,7 +27,7 @@ public class EditorPopupMenu extends JPopupMenu
 				"/images/undo.gif"));
 
 		addSeparator();
-
+/*
 		add(
 				editor.bind(mxResources.get("cut"), TransferHandler
 						.getCutAction(),
@@ -43,7 +43,7 @@ public class EditorPopupMenu extends JPopupMenu
 				"/images/paste.gif"));
 
 		addSeparator();
-
+*/
 		add(
 				editor.bind(mxResources.get("delete"), mxGraphActions
 						.getDeleteAction(),
@@ -56,7 +56,7 @@ public class EditorPopupMenu extends JPopupMenu
 		JMenu menu = (JMenu) add(new JMenu(mxResources.get("format")));
 
 		EditorMenuBar.populateFormatMenu(menu, editor);
-
+/*
 		// Creates the shape menu
 		menu = (JMenu) add(new JMenu(mxResources.get("shape")));
 
@@ -67,7 +67,8 @@ public class EditorPopupMenu extends JPopupMenu
 		add(
 				editor.bind(mxResources.get("edit"), mxGraphActions
 						.getEditAction())).setEnabled(selected);
-
+*/
+/*
 		addSeparator();
 
 		add(editor.bind(mxResources.get("selectVertices"), mxGraphActions
@@ -79,6 +80,8 @@ public class EditorPopupMenu extends JPopupMenu
 
 		add(editor.bind(mxResources.get("selectAll"), mxGraphActions
 				.getSelectAllAction()));
+*/
 	}
+
 
 }
