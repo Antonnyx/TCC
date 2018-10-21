@@ -164,6 +164,7 @@ public class BasicGraphEditor extends JPanel
 	 */
 	public BasicGraphEditor(String appTitle, mxGraphComponent component)
 	{
+            
 		// Stores and updates the frame title
 		this.appTitle = appTitle;
 

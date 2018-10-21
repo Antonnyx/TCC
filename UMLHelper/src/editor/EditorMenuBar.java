@@ -70,9 +70,15 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import view.CriaTelaAjuda;
+import view.CriarTelaDiagramaCasoDeUso;
 
 public class EditorMenuBar extends JMenuBar
 {
@@ -82,16 +88,26 @@ public class EditorMenuBar extends JMenuBar
 	 */
         private MouseListener jMenuMouseListener;
         private MouseListener jMenuItemMouseListener;
+        private CriarTelaDiagramaCasoDeUso telaUML;
+        
 	private static final long serialVersionUID = 4060203894740766714L;
-
+        
 	public enum AnalyzeType
 	{
 		IS_CONNECTED, IS_SIMPLE, IS_CYCLIC_DIRECTED, IS_CYCLIC_UNDIRECTED, COMPLEMENTARY, REGULARITY, COMPONENTS, MAKE_CONNECTED, MAKE_SIMPLE, IS_TREE, ONE_SPANNING_TREE, IS_DIRECTED, GET_CUT_VERTEXES, GET_CUT_EDGES, GET_SOURCES, GET_SINKS, PLANARITY, IS_BICONNECTED, GET_BICONNECTED, SPANNING_TREE, FLOYD_ROY_WARSHALL
 	}
+        private void sleep(int qtd){
+            try {
+                Thread.sleep(qtd);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(EditorMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         //Método para inicializar os mouseListeners para mostra a Datilologia em Libras dos itens da tela
         private void initMouseListeners(){
+            
             jMenuMouseListener = new MouseListener() {
-                JFrame frame;
+                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                    
@@ -110,24 +126,19 @@ public class EditorMenuBar extends JMenuBar
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JMenu j = (JMenu)e.getComponent();
-                   // if(frame == null){
-                        frame = new CriaTelaAjuda().getTelaAcessivel(j.getText().toLowerCase().replaceAll("\\s",""));
-                        frame.setLocation(j.getX()+400,j.getY()+100);
-                   // }
-                    frame.setVisible(true);
-                    
-                        
+                    telaUML.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(j.getText().toLowerCase()));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    frame.dispose();
+                    telaUML.limparPainelAcessivel();
                 }
             };
          
+            
             jMenuItemMouseListener = new MouseListener() {
-                JFrame frame;
-                JDialog dialog;
+                
+                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                    
@@ -146,33 +157,22 @@ public class EditorMenuBar extends JMenuBar
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JMenuItem j = (JMenuItem)e.getComponent();
-
-                    String palavra = j.getText().toLowerCase();
-
-                    //if(frame == null){
-                        dialog = new CriaTelaAjuda().getDialog(palavra);
-                        //frame = new CriaTelaAjuda().getTelaAcessivel(palavra);
-                        //frame.setLocation(j.getX()+400,j.getY()+100);
-                        dialog.setLocation(j.getX()+400,j.getY()+100);
-                    //}
-                    dialog.setVisible(true);
-                    //frame.setVisible(true);
-                   
+                    telaUML.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(j.getText().toLowerCase()));    
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                   // frame.dispose();
-                   dialog.dispose();
+                     telaUML.limparPainelAcessivel();           
                 }
             };
         
         }
         
 
-	public EditorMenuBar(final BasicGraphEditor editor)
+	public EditorMenuBar(final BasicGraphEditor editor, JFrame telaUML)
 	{
                 initMouseListeners();
+                this.telaUML = (CriarTelaDiagramaCasoDeUso) telaUML;
 		final mxGraphComponent graphComponent = editor.getGraphComponent();
 		final mxGraph graph = graphComponent.getGraph();
 		mxAnalysisGraph aGraph = new mxAnalysisGraph();
@@ -182,9 +182,11 @@ public class EditorMenuBar extends JMenuBar
 		// Creates the file menu
 		menu = add(new JMenu(mxResources.get("file")));
                 menu.addMouseListener(jMenuMouseListener);
-
-
-		menu.add(editor.bind(mxResources.get("new"), new NewAction(), "/images/new.gif")).addMouseListener(jMenuItemMouseListener);
+                
+                Action action = editor.bind(mxResources.get("new"), new NewAction(), "/images/new.gif");
+                
+		menu.add(action).addMouseListener(jMenuItemMouseListener);
+                action.setEnabled(true);
 		menu.add(editor.bind(mxResources.get("openFile"), new OpenAction(), "/images/open.gif")).addMouseListener(jMenuItemMouseListener);
 
 		menu.addSeparator();
@@ -195,7 +197,8 @@ public class EditorMenuBar extends JMenuBar
 		menu.addSeparator();
 
 		menu.add(editor.bind(mxResources.get("exit"), new ExitAction())).addMouseListener(jMenuItemMouseListener);
-
+                
+                menu.setEnabled(true);
 		// Creates the edit menu
 		menu = add(new JMenu(mxResources.get("edit")));
                 menu.addMouseListener(jMenuMouseListener);

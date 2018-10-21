@@ -35,6 +35,7 @@ import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxGraph;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JFrame;
 
 public class CriarDiagramaTela extends BasicGraphEditor
 {
@@ -101,11 +102,10 @@ public class CriarDiagramaTela extends BasicGraphEditor
 		// Adds some template cells for dropping into the graph
 
 		shapesPalette.addTemplate("Ator",new ImageIcon(CriarDiagramaTela.class.getResource("/images/actor.png")),"shape=actor", 120, 160, "");   
-		shapesPalette.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/images/straight.png")),"straight", 120, 120, "");
-                
+		shapesPalette.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/images/straight.png")),"straight", 120, 120, "");             
                 shapesPalette.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/images/ellipse.png")),"ellipse", 160, 100, "");
                
-		
+            
 	}
 
 	/**
@@ -328,6 +328,7 @@ public class CriarDiagramaTela extends BasicGraphEditor
 	 * 
 	 * @param args
 	 */
+       
 	public static void main(String[] args)
 	{
 		try
@@ -343,6 +344,6 @@ public class CriarDiagramaTela extends BasicGraphEditor
 		mxConstants.W3C_SHADOWCOLOR = "#D3D3D3";
 
 		CriarDiagramaTela editor = new CriarDiagramaTela();
-		editor.createFrame(new EditorMenuBar(editor)).setVisible(true);
+		editor.createFrame(new EditorMenuBar(editor, new JFrame())).setVisible(true);
 	}
 }
