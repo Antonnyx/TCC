@@ -104,32 +104,7 @@ public class CriarDiagramaTela extends BasicGraphEditor
 		shapesPalette.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/images/straight.png")),"straight", 120, 120, "");
                 
                 shapesPalette.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/images/ellipse.png")),"ellipse", 160, 100, "");
-                shapesPalette.getComponent(1).addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        System.out.println("Clickou em mim");
-                    }
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        
-                    }
-
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        
-                    }
-
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        
-                    }
-                });
+               
 		
 	}
 

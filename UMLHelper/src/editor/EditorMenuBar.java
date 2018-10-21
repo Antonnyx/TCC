@@ -65,6 +65,14 @@ import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxResources;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import view.CriaTelaAjuda;
 
 public class EditorMenuBar extends JMenuBar
 {
@@ -72,50 +80,135 @@ public class EditorMenuBar extends JMenuBar
 	/**
 	 * 
 	 */
+        private MouseListener jMenuMouseListener;
+        private MouseListener jMenuItemMouseListener;
 	private static final long serialVersionUID = 4060203894740766714L;
 
 	public enum AnalyzeType
 	{
 		IS_CONNECTED, IS_SIMPLE, IS_CYCLIC_DIRECTED, IS_CYCLIC_UNDIRECTED, COMPLEMENTARY, REGULARITY, COMPONENTS, MAKE_CONNECTED, MAKE_SIMPLE, IS_TREE, ONE_SPANNING_TREE, IS_DIRECTED, GET_CUT_VERTEXES, GET_CUT_EDGES, GET_SOURCES, GET_SINKS, PLANARITY, IS_BICONNECTED, GET_BICONNECTED, SPANNING_TREE, FLOYD_ROY_WARSHALL
 	}
+        //Método para inicializar os mouseListeners para mostra a Datilologia em Libras dos itens da tela
+        private void initMouseListeners(){
+            jMenuMouseListener = new MouseListener() {
+                JFrame frame;
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                   
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JMenu j = (JMenu)e.getComponent();
+                   // if(frame == null){
+                        frame = new CriaTelaAjuda().getTelaAcessivel(j.getText().toLowerCase().replaceAll("\\s",""));
+                        frame.setLocation(j.getX()+400,j.getY()+100);
+                   // }
+                    frame.setVisible(true);
+                    
+                        
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    frame.dispose();
+                }
+            };
+         
+            jMenuItemMouseListener = new MouseListener() {
+                JFrame frame;
+                JDialog dialog;
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                   
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JMenuItem j = (JMenuItem)e.getComponent();
+
+                    String palavra = j.getText().toLowerCase();
+
+                    //if(frame == null){
+                        dialog = new CriaTelaAjuda().getDialog(palavra);
+                        //frame = new CriaTelaAjuda().getTelaAcessivel(palavra);
+                        //frame.setLocation(j.getX()+400,j.getY()+100);
+                        dialog.setLocation(j.getX()+400,j.getY()+100);
+                    //}
+                    dialog.setVisible(true);
+                    //frame.setVisible(true);
+                   
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                   // frame.dispose();
+                   dialog.dispose();
+                }
+            };
+        
+        }
+        
 
 	public EditorMenuBar(final BasicGraphEditor editor)
 	{
+                initMouseListeners();
 		final mxGraphComponent graphComponent = editor.getGraphComponent();
 		final mxGraph graph = graphComponent.getGraph();
 		mxAnalysisGraph aGraph = new mxAnalysisGraph();
-
 		JMenu menu = null;
 		JMenu submenu = null;
-
+                initMouseListeners();
 		// Creates the file menu
 		menu = add(new JMenu(mxResources.get("file")));
+                menu.addMouseListener(jMenuMouseListener);
 
-		menu.add(editor.bind(mxResources.get("new"), new NewAction(), "/images/new.gif"));
-		menu.add(editor.bind(mxResources.get("openFile"), new OpenAction(), "/images/open.gif"));
 
-		menu.addSeparator();
-
-		menu.add(editor.bind(mxResources.get("save"), new SaveAction(false), "/images/save.gif"));
-		menu.add(editor.bind(mxResources.get("saveAs"), new SaveAction(true), "/images/saveas.gif"));
+		menu.add(editor.bind(mxResources.get("new"), new NewAction(), "/images/new.gif")).addMouseListener(jMenuItemMouseListener);
+		menu.add(editor.bind(mxResources.get("openFile"), new OpenAction(), "/images/open.gif")).addMouseListener(jMenuItemMouseListener);
 
 		menu.addSeparator();
 
-		menu.add(editor.bind(mxResources.get("exit"), new ExitAction()));
+		menu.add(editor.bind(mxResources.get("save"), new SaveAction(false), "/images/save.gif")).addMouseListener(jMenuItemMouseListener);
+		menu.add(editor.bind(mxResources.get("saveAs"), new SaveAction(true), "/images/saveas.gif")).addMouseListener(jMenuItemMouseListener);
+
+		menu.addSeparator();
+
+		menu.add(editor.bind(mxResources.get("exit"), new ExitAction())).addMouseListener(jMenuItemMouseListener);
 
 		// Creates the edit menu
 		menu = add(new JMenu(mxResources.get("edit")));
-
-		menu.add(editor.bind(mxResources.get("undo"), new HistoryAction(true), "/images/undo.gif"));
-		menu.add(editor.bind(mxResources.get("redo"), new HistoryAction(false), "/images/redo.gif"));
+                menu.addMouseListener(jMenuMouseListener);
+		menu.add(editor.bind(mxResources.get("undo"), new HistoryAction(true), "/images/undo.gif")).addMouseListener(jMenuItemMouseListener);
+		menu.add(editor.bind(mxResources.get("redo"), new HistoryAction(false), "/images/redo.gif")).addMouseListener(jMenuItemMouseListener);
 
 		menu.addSeparator();
  
-		menu.add(editor.bind(mxResources.get("delete"), mxGraphActions.getDeleteAction(), "/images/delete.gif"));
+		menu.add(editor.bind(mxResources.get("delete"), mxGraphActions.getDeleteAction(), "/images/delete.gif")).addMouseListener(jMenuItemMouseListener);
                 
 		// Creates the window menu
 		menu = add(new JMenu(mxResources.get("window")));
-
+                menu.addMouseListener(jMenuMouseListener);
 		UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
 
 		for (int i = 0; i < lafs.length; i++)

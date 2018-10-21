@@ -761,8 +761,11 @@ public class BasicGraphEditor extends JPanel
 		frame.getContentPane().add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setJMenuBar(menuBar);
-		frame.setSize(screenSize);
-
+                Double doubleW = screenSize.getWidth()*0.9;
+                Double heightW = screenSize.getHeight()*0.9;
+                
+		frame.setSize(doubleW.intValue(), heightW.intValue());
+                frame.setLocationRelativeTo(null);
 		// Updates the frame title
 		updateTitle();
 
