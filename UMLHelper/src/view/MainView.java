@@ -41,6 +41,7 @@ public class MainView extends javax.swing.JFrame {
         initComponents();
         //initElements();
         //
+        //
     }
     
     public MainView(String nomeDiagrama){

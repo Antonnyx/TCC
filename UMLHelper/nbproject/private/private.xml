@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/editor/EditorMenuBar.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>107</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/view/CriarDiagramaTela.java</file>
-            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/view/MainView.java</file>
+            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriarDiagramaTela.java</file>
+            <file>file:/D:/GitHub/TCCI/UMLHelper/src/editor/EditorMenuBar.java</file>
+            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriaTelaAjuda.java</file>
+            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriarTelaDiagramaCasoDeUso.java</file>
         </group>
     </open-files>
 </project-private>
