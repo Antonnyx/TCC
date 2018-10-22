@@ -50,7 +50,7 @@ public class CriaTelaAjuda {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         for(char c: texto.toCharArray()){
-            if(!Character.toString(c).equals(" ")){
+            if(!Character.toString(c).equals(" ") && !Character.toString(c).equals(":")){
                 JLabel label = new JLabel();
                 ImageIcon imageIcon = new ImageIcon(CriaTelaAjuda.class.getResource("/libras_images/letra_"+c+".png"));
                 label.setIcon(imageIcon);
@@ -65,7 +65,7 @@ public class CriaTelaAjuda {
     public ArrayList<JLabel> getLabelLibras(String texto){
         ArrayList<JLabel> labels = new ArrayList<JLabel>();
         for(char c: texto.toCharArray()){
-            if(!Character.toString(c).equals(" ")){
+            if(!Character.toString(c).equals(" ") && !Character.toString(c).equals(":")){
                 JLabel label = new JLabel();
                 ImageIcon imageIcon = new ImageIcon(CriaTelaAjuda.class.getResource("/libras_images/letra_"+c+".png"));
                 label.setIcon(imageIcon);

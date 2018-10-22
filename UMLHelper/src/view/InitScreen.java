@@ -77,7 +77,7 @@ public class InitScreen extends javax.swing.JFrame {
     private void criarNovoDiagramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarNovoDiagramaActionPerformed
         String resposta = JOptionPane.showInputDialog(null, "Escolha um nome para o novo diagrama");
         System.out.println("Resposta: " + resposta);
-        new MainView(resposta).setVisible(true);
+        new CriarTelaDiagramaCasoDeUso().setVisible(true);
     }//GEN-LAST:event_criarNovoDiagramaActionPerformed
 
     /**

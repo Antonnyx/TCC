@@ -71,6 +71,7 @@ import com.mxgraph.util.png.mxPngEncodeParam;
 import com.mxgraph.util.png.mxPngImageEncoder;
 import com.mxgraph.util.png.mxPngTextDecoder;
 import com.mxgraph.view.mxGraph;
+import javax.swing.JFrame;
 
 /**
  *
@@ -1527,7 +1528,7 @@ public class EditorActions
 						if (fc.getSelectedFile().isDirectory())
 						{
 							EditorPalette palette = editor.insertPalette(fc
-									.getSelectedFile().getName());
+									.getSelectedFile().getName(), new JFrame());
 
 							for (File f : fc.getSelectedFile().listFiles(
 									new FilenameFilter()

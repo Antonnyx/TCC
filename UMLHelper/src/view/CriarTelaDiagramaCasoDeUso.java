@@ -12,10 +12,19 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,10 +52,15 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
     
     private Dimension screenSize;
     private JPanel painelAcessivel;
+    private JButton botaoAdicionarVideo;
+    private MouseListener jButtonMouseListener;
+    private String pathToVideoFile;
+    private JLabel videoSelecionado;
+    private MouseListener jLabelMouseListener;
     
     public CriarTelaDiagramaCasoDeUso() {
         initComponents();
-        //initListeners();
+        initListeners();
         setTamanhoTela();
         setLayout(null);
         
@@ -56,7 +70,7 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
         Double acessivelWidth = screenSize.getWidth() * 0.8;
         painelAcessivel.setSize(new Dimension(acessivelWidth.intValue(), 100));
         painelAcessivel.setLocation(100, 0);
-        painelAcessivel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.BLACK, Color.BLACK));
+        //painelAcessivel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.BLACK, Color.BLACK));
         JPanel p = criarAreaUML();
         JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
         
@@ -69,7 +83,22 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
         p.setLocation(0, 110);
         separator.setSize(doubleW.intValue(), 1);
         separator.setLocation(0, 101);
-       
+        
+        botaoAdicionarVideo = new JButton("Adicionar Video");
+        getContentPane().add(botaoAdicionarVideo);
+        botaoAdicionarVideo.setSize(140, 30);
+        botaoAdicionarVideo.setLocation(1650, 0);
+        
+        botaoAdicionarVideo.addMouseListener(jButtonMouseListener);
+        
+        videoSelecionado = new JLabel("Video Selecionado: Não");
+ 
+        getContentPane().add(videoSelecionado);
+        videoSelecionado.setSize(140, 30);
+        videoSelecionado.setLocation(1650, 30);
+        videoSelecionado.addMouseListener(jLabelMouseListener);
+        
+        
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -83,14 +112,88 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
             Logger.getLogger(CriarTelaDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
         }
         SwingUtilities.updateComponentTreeUI(this);
-        setTitle("Novo Diagram de Caso de Uso");
+        setTitle("Novo Diagrama de Caso de Uso");
         
         
     }
     
+    private void initListeners(){
+        jButtonMouseListener = new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFileChooser carregarArquivo  = new JFileChooser();
+                String nomeArquivo = "";
+                carregarArquivo.setApproveButtonText("Escolher arquivo");
+                switch (carregarArquivo.showOpenDialog(CriarTelaDiagramaCasoDeUso.this)){
+                    case JFileChooser.APPROVE_OPTION:
+                        System.out.println(carregarArquivo.getSelectedFile().toPath());
+                        //arquivo = carregarArquivo.getSelectedFile();
+                        nomeArquivo = carregarArquivo.getSelectedFile().getName();
+                        System.out.println("Nome arquivo: " + nomeArquivo);
+                        videoSelecionado.setText("Video Selecionado: Sim");
+                        break;
+                
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                JButton button = (JButton) e.getComponent();
+                atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(button.getText().toLowerCase()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                limparPainelAcessivel();
+            }
+        };
+        
+        jLabelMouseListener = new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                JLabel label = (JLabel) e.getComponent();
+                atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(label.getText().toLowerCase()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                limparPainelAcessivel();
+            }
+        };
+       
+    }
+    
+    
+    
     public JFrame onMyFrame(){
         return this;
     }
+    
     
     public void atualizarPainelAcessivel(ArrayList<JLabel> listaLabels){
         painelAcessivel.setLayout(new FlowLayout());        
@@ -117,7 +220,7 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
     }
 
     private JPanel criarAreaUML(){
-        CriarDiagramaTela editor = new CriarDiagramaTela("Novo Diagrama", new CustomGraphComponent(new CustomGraph()));
+        CriarDiagramaTela editor = new CriarDiagramaTela("Novo Diagrama de Caso de Uso", new CustomGraphComponent(new CustomGraph()), this);
         setJMenuBar(new EditorMenuBar(editor, this));
         return editor;
     }

@@ -62,6 +62,7 @@ import com.mxgraph.util.mxUndoableEdit.mxUndoableChange;
 import com.mxgraph.view.mxGraph;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import view.CriarTelaDiagramaCasoDeUso;
 
 public class BasicGraphEditor extends JPanel
 {
@@ -71,6 +72,7 @@ public class BasicGraphEditor extends JPanel
 	 */
 	private static final long serialVersionUID = -6561623072112577140L;
 
+        private CriarTelaDiagramaCasoDeUso telaUML;
 	/**
 	 * Adds required resources for i18n
 	 */
@@ -310,9 +312,10 @@ public class BasicGraphEditor extends JPanel
 	/**
 	 * 
 	 */
-	public EditorPalette insertPalette(String title)
+	public EditorPalette insertPalette(String title, JFrame telaUML)
 	{
-		final EditorPalette palette = new EditorPalette();
+                this.telaUML = (CriarTelaDiagramaCasoDeUso) telaUML;
+		final EditorPalette palette = new EditorPalette(this.telaUML);
 		final JScrollPane scrollPane = new JScrollPane(palette);
 		scrollPane
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

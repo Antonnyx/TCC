@@ -56,24 +56,26 @@ public class CriarDiagramaTela extends BasicGraphEditor
 	 * connections. This is currently unused.
 	 */
 	public static URL url = null;
-
+        private CriarTelaDiagramaCasoDeUso telaUML;
 	
 
 	public CriarDiagramaTela()
 	{
-		this("Tela Criar Diagrama de Caso de Uso", new CustomGraphComponent(new CustomGraph()));
+		this("Tela Criar Diagrama de Caso de Uso", new CustomGraphComponent(new CustomGraph()), new JFrame());
 	}
 
 	/**
 	 * 
 	 */
-	public CriarDiagramaTela(String appTitle, mxGraphComponent component)
+	public CriarDiagramaTela(String appTitle, mxGraphComponent component, JFrame telaUML)
 	{
+                
 		super(appTitle, component);
+                this.telaUML = (CriarTelaDiagramaCasoDeUso) telaUML;
 		final mxGraph graph = graphComponent.getGraph();
 
 		// Creates the shapes palette
-		EditorPalette shapesPalette = insertPalette(mxResources.get("shapes"));
+		EditorPalette shapesPalette = insertPalette(mxResources.get("shapes"), this.telaUML);
 		//EditorPalette imagesPalette = insertPalette(mxResources.get("images"));
 		//EditorPalette symbolsPalette = insertPalette(mxResources.get("symbols"));
 
@@ -104,6 +106,7 @@ public class CriarDiagramaTela extends BasicGraphEditor
 		shapesPalette.addTemplate("Ator",new ImageIcon(CriarDiagramaTela.class.getResource("/images/actor.png")),"shape=actor", 120, 160, "");   
 		shapesPalette.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/images/straight.png")),"straight", 120, 120, "");             
                 shapesPalette.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/images/ellipse.png")),"ellipse", 160, 100, "");
+                
                
             
 	}

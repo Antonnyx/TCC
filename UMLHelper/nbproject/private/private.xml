@@ -12,10 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriarDiagramaTela.java</file>
-            <file>file:/D:/GitHub/TCCI/UMLHelper/src/editor/EditorMenuBar.java</file>
-            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriaTelaAjuda.java</file>
-            <file>file:/D:/GitHub/TCCI/UMLHelper/src/view/CriarTelaDiagramaCasoDeUso.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/view/MainView.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/view/CriarTelaDiagramaCasoDeUso.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/resources/editor_pt.properties</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/editor/EditorRuler.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/editor/EditorToolBar.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/view/CriaTelaAjuda.java</file>
         </group>
     </open-files>
 </project-private>

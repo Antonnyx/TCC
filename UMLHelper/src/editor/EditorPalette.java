@@ -36,6 +36,9 @@ import com.mxgraph.util.mxEventSource;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
+import javax.swing.JFrame;
+import view.CriaTelaAjuda;
+import view.CriarTelaDiagramaCasoDeUso;
 
 public class EditorPalette extends JPanel
 {
@@ -43,6 +46,7 @@ public class EditorPalette extends JPanel
 	/**
 	 * 
 	 */
+        
 	private static final long serialVersionUID = 7771113885935187066L;
 
 	/**
@@ -60,12 +64,14 @@ public class EditorPalette extends JPanel
 	 */
 	protected Color gradientColor = new Color(117, 195, 173);
 
+        private CriarTelaDiagramaCasoDeUso telaUML;
 	/**
 	 * 
 	 */
 	@SuppressWarnings("serial")
-	public EditorPalette()
+	public EditorPalette(JFrame telaUML)
 	{
+                this.telaUML = (CriarTelaDiagramaCasoDeUso)telaUML;
 		setBackground(new Color(149, 230, 190));
 		setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
@@ -96,6 +102,7 @@ public class EditorPalette extends JPanel
 			 */
 			public void mouseEntered(MouseEvent e)
 			{
+                            
 			}
 
 			/*
@@ -313,6 +320,8 @@ public class EditorPalette extends JPanel
 			 */
 			public void mouseEntered(MouseEvent e)
 			{
+                            JLabel label = (JLabel)e.getComponent();
+                            telaUML.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(label.getText().toLowerCase()));
 			}
 
 			/*
@@ -321,6 +330,7 @@ public class EditorPalette extends JPanel
 			 */
 			public void mouseExited(MouseEvent e)
 			{
+                            telaUML.limparPainelAcessivel();
 			}
 
 			/*
