@@ -164,6 +164,10 @@ public class BasicGraphEditor extends JPanel
 	/**
 	 * 
 	 */
+        
+        public CriarTelaDiagramaCasoDeUso getTelaUML(){
+            return this.telaUML;
+        }
 	public BasicGraphEditor(String appTitle, mxGraphComponent component)
 	{
             
@@ -312,9 +316,9 @@ public class BasicGraphEditor extends JPanel
 	/**
 	 * 
 	 */
-	public EditorPalette insertPalette(String title, JFrame telaUML)
+	public EditorPalette insertPalette(String title, CriarTelaDiagramaCasoDeUso telaUML)
 	{
-                this.telaUML = (CriarTelaDiagramaCasoDeUso) telaUML;
+                this.telaUML = telaUML;
 		final EditorPalette palette = new EditorPalette(this.telaUML);
 		final JScrollPane scrollPane = new JScrollPane(palette);
 		scrollPane

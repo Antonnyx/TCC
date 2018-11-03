@@ -25,6 +25,7 @@ public class CriaTelaAjuda {
     //Método que recebe uma String(nome do JMENU que irá essar essa método dentro de um mouseListener)
     //Método cria um JFRAME para mostrar o texto em String em forma de Imagens em Libras(Datilologia)
     public JFrame getTelaAcessivel(String texto){
+        texto = texto.toLowerCase();
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());

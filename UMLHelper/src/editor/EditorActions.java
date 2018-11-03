@@ -71,7 +71,12 @@ import com.mxgraph.util.png.mxPngEncodeParam;
 import com.mxgraph.util.png.mxPngImageEncoder;
 import com.mxgraph.util.png.mxPngTextDecoder;
 import com.mxgraph.view.mxGraph;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import view.CriarTelaDiagramaCasoDeUso;
 
 /**
  *
@@ -604,7 +609,7 @@ public class EditorActions
 						"VML " + mxResources.get("file") + " (.html)");
 				String filename = null;
 				boolean dialogShown = false;
-
+                                JFileChooser fc = null;
 				if (showDialog || editor.getCurrentFile() == null)
 				{
 					String wd;
@@ -622,7 +627,7 @@ public class EditorActions
 						wd = System.getProperty("user.dir");
 					}
 
-					JFileChooser fc = new JFileChooser(wd);
+					fc = new JFileChooser(wd);
 
 					// Adds the default file format
 					FileFilter defaultFilter = xmlPngFilter;
@@ -807,7 +812,38 @@ public class EditorActions
 							ex.toString(), mxResources.get("error"),
 							JOptionPane.ERROR_MESSAGE);
 				}
-			}
+                                
+                        System.out.println("Ação save fired!");
+                        CriarTelaDiagramaCasoDeUso telaUML = editor.getTelaUML();
+                        System.out.println("Arquivo principal: " + fc.getSelectedFile().getName());
+                        if(telaUML.hasVideo()){
+                            System.out.println("Algum video foi selecionado");
+                            System.out.println(telaUML.getVideoPath());
+                            File file = new File(fc.getSelectedFile().getName()+".vid");
+                            BufferedWriter writer = null;
+                                    try {
+                                        writer = new BufferedWriter(new FileWriter(file));
+                                        writer.write("video=" + telaUML.getVideoPath() + "\n");
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(EditorActions.class.getName()).log(Level.SEVERE, null, ex);
+                                    }finally{
+                                try {
+                                    writer.close();
+                                    System.out.println("writer closed");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(EditorActions.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                    }
+                                    
+                        }else{
+                            System.out.println("Nenhum video foi selecionado");
+                                    
+                        }      
+		}
+                        
+                        
+                            
+                        
 		}
 	}
 
@@ -1528,7 +1564,7 @@ public class EditorActions
 						if (fc.getSelectedFile().isDirectory())
 						{
 							EditorPalette palette = editor.insertPalette(fc
-									.getSelectedFile().getName(), new JFrame());
+									.getSelectedFile().getName(), new CriarTelaDiagramaCasoDeUso());
 
 							for (File f : fc.getSelectedFile().listFiles(
 									new FilenameFilter()

@@ -55,8 +55,10 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
     private JButton botaoAdicionarVideo;
     private MouseListener jButtonMouseListener;
     private String pathToVideoFile;
+    
     private JLabel videoSelecionado;
     private MouseListener jLabelMouseListener;
+    private boolean hasVideo = false;
     
     public CriarTelaDiagramaCasoDeUso() {
         initComponents();
@@ -117,6 +119,11 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
         
     }
     
+    private void carregarVideoDeArquivo(String videoPath){
+        pathToVideoFile = videoPath;
+        videoSelecionado.setText("Video Selecionado: Sim");
+    }
+    
     private void initListeners(){
         jButtonMouseListener = new MouseListener() {
             @Override
@@ -130,7 +137,12 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
                         //arquivo = carregarArquivo.getSelectedFile();
                         nomeArquivo = carregarArquivo.getSelectedFile().getName();
                         System.out.println("Nome arquivo: " + nomeArquivo);
+                        pathToVideoFile = carregarArquivo.getSelectedFile().getAbsolutePath();
                         videoSelecionado.setText("Video Selecionado: Sim");
+                        hasVideo = true;
+                        break;
+                    default:
+                        pathToVideoFile = "";
                         break;
                 
                 }
@@ -188,6 +200,13 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
        
     }
     
+    public String getVideoPath(){
+        return this.pathToVideoFile;
+    }
+    
+    public boolean hasVideo(){
+        return this.hasVideo;
+    }
     
     
     public JFrame onMyFrame(){
@@ -202,6 +221,14 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
         }
         painelAcessivel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         painelAcessivel.validate();
+    }
+    
+    public void ligarAcessibilidade(){
+        painelAcessivel.setVisible(true);
+    }
+    
+    public void desligarAcessibilidade(){
+        painelAcessivel.setVisible(false);
     }
     
     public void limparPainelAcessivel(){

@@ -87,8 +87,8 @@ public class EditorMenuBar extends JMenuBar
 	 * 
 	 */
         private MouseListener jMenuMouseListener;
-        private MouseListener jMenuItemMouseListener;
-        private CriarTelaDiagramaCasoDeUso telaUML;
+        private MouseListener jMenuItemMouseListener, jMenuItemDatilologiaOn, jMenuItemDatilologiaOff;
+        public CriarTelaDiagramaCasoDeUso telaUML;
         
 	private static final long serialVersionUID = 4060203894740766714L;
         
@@ -165,6 +165,71 @@ public class EditorMenuBar extends JMenuBar
                      telaUML.limparPainelAcessivel();           
                 }
             };
+            
+            jMenuItemDatilologiaOn = new MouseListener() {
+                
+                
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                   
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                   JMenuItem j = (JMenuItem)e.getComponent();
+                   j.setSelected(true);
+                   telaUML.ligarAcessibilidade();
+                   this.mouseExited(e);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JMenuItem j = (JMenuItem)e.getComponent();
+                    telaUML.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(j.getText().toLowerCase()));    
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                     telaUML.limparPainelAcessivel();           
+                }
+            };
+         
+            jMenuItemDatilologiaOff = new MouseListener() {
+                
+                
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    telaUML.desligarAcessibilidade();
+                    this.mouseExited(e);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JMenuItem j = (JMenuItem)e.getComponent();
+                    telaUML.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(j.getText().toLowerCase()));    
+                    
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                     telaUML.limparPainelAcessivel();           
+                }
+            };
         
         }
         
@@ -229,6 +294,13 @@ public class EditorMenuBar extends JMenuBar
 				}
 			});
 		}
+                //Menu para habilitar/desabilitar libras
+                menu = add(new JMenu("Opções"));
+                menu.addMouseListener(jMenuMouseListener);
+                menu.add("Datilologia ON").addMouseListener(jMenuItemDatilologiaOn);
+                menu.add("Datilologia OFF").addMouseListener(jMenuItemDatilologiaOff);
+                    
+                
 
 	}
 

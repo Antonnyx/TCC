@@ -61,17 +61,17 @@ public class CriarDiagramaTela extends BasicGraphEditor
 
 	public CriarDiagramaTela()
 	{
-		this("Tela Criar Diagrama de Caso de Uso", new CustomGraphComponent(new CustomGraph()), new JFrame());
+		this("Tela Criar Diagrama de Caso de Uso", new CustomGraphComponent(new CustomGraph()), new CriarTelaDiagramaCasoDeUso());
 	}
 
 	/**
 	 * 
 	 */
-	public CriarDiagramaTela(String appTitle, mxGraphComponent component, JFrame telaUML)
+	public CriarDiagramaTela(String appTitle, mxGraphComponent component, CriarTelaDiagramaCasoDeUso telaUML)
 	{
                 
 		super(appTitle, component);
-                this.telaUML = (CriarTelaDiagramaCasoDeUso) telaUML;
+                this.telaUML = telaUML;
 		final mxGraph graph = graphComponent.getGraph();
 
 		// Creates the shapes palette

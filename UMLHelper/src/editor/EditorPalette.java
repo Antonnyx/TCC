@@ -69,9 +69,9 @@ public class EditorPalette extends JPanel
 	 * 
 	 */
 	@SuppressWarnings("serial")
-	public EditorPalette(JFrame telaUML)
+	public EditorPalette(CriarTelaDiagramaCasoDeUso telaUML)
 	{
-                this.telaUML = (CriarTelaDiagramaCasoDeUso)telaUML;
+                this.telaUML = telaUML;
 		setBackground(new Color(149, 230, 190));
 		setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
