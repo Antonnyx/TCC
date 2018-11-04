@@ -269,7 +269,8 @@ public class EditorMenuBar extends JMenuBar
                 menu.addMouseListener(jMenuMouseListener);
 		menu.add(editor.bind(mxResources.get("undo"), new HistoryAction(true), "/images/undo.gif")).addMouseListener(jMenuItemMouseListener);
 		menu.add(editor.bind(mxResources.get("redo"), new HistoryAction(false), "/images/redo.gif")).addMouseListener(jMenuItemMouseListener);
-
+                
+                menu.add(editor.bind(mxResources.get("edit"), mxGraphActions.getEditAction())).addMouseListener(jMenuItemMouseListener);
 		menu.addSeparator();
  
 		menu.add(editor.bind(mxResources.get("delete"), mxGraphActions.getDeleteAction(), "/images/delete.gif")).addMouseListener(jMenuItemMouseListener);

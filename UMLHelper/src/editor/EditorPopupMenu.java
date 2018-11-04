@@ -9,6 +9,7 @@ import javax.swing.TransferHandler;
 import com.mxgraph.swing.util.mxGraphActions;
 import com.mxgraph.util.mxResources;
 import editor.EditorActions.HistoryAction;
+import javax.swing.JMenuItem;
 
 public class EditorPopupMenu extends JPopupMenu
 {
@@ -51,6 +52,17 @@ public class EditorPopupMenu extends JPopupMenu
 				.setEnabled(selected);
 
 		addSeparator();
+                add(
+				editor.bind(mxResources.get("edit"), mxGraphActions
+						.getEditAction(),
+						"/images/delete.gif"))
+				.setEnabled(selected);
+
+		addSeparator();
+                add(new JMenuItem("Add Video"));
+
+		addSeparator();
+                
 
 		// Creates the format menu
 		JMenu menu = (JMenu) add(new JMenu(mxResources.get("format")));
