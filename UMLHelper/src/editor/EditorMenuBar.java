@@ -77,7 +77,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import view.CriaTelaAjuda;
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
 import view.CriarTelaDiagramaCasoDeUso;
 
 public class EditorMenuBar extends JMenuBar

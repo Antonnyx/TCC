@@ -37,7 +37,7 @@ import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import javax.swing.JFrame;
-import view.CriaTelaAjuda;
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
 import view.CriarTelaDiagramaCasoDeUso;
 
 public class EditorPalette extends JPanel

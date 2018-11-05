@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
-
+package br.edu.ifam.umlhelper.view;
 
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;

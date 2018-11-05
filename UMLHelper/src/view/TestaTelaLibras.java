@@ -5,6 +5,8 @@
  */
 package view;
 
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
+
 /**
  *
  * @author Antonio

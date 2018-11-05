@@ -1,6 +1,5 @@
 package editor;
 
-import editor.EditorAboutFrame;
 import editor.EditorKeyboardHandler;
 import editor.EditorPalette;
 import editor.EditorPopupMenu;
@@ -703,6 +702,7 @@ public class BasicGraphEditor extends JPanel
 	/**
 	 * 
 	 */
+        /*
 	public void about()
 	{
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
@@ -720,7 +720,7 @@ public class BasicGraphEditor extends JPanel
 			// Shows the modal dialog and waits
 			about.setVisible(true);
 		}
-	}
+	}*/
 
 	/**
 	 * 

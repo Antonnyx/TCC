@@ -5,6 +5,7 @@
  */
 package view;
 
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
 import editor.EditorMenuBar;
 import java.awt.Color;
 import java.awt.Component;
@@ -48,7 +49,7 @@ public class CriarTelaDiagramaCasoDeUso extends javax.swing.JFrame {
     /**
      * Creates new form CriarTelaDiagramaCasoDeUso
      */
-    private CriaTelaAjuda telaAjuda = new CriaTelaAjuda();
+    
     
     private Dimension screenSize;
     private JPanel painelAcessivel;
