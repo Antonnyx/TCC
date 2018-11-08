@@ -46,22 +46,27 @@ import javax.swing.WindowConstants;
  */
 public class Player2 {
   private static String videoPath;
-  
+  static JFrame frame;
   public static void setVideoPath(String videoPath){
       Player2.videoPath = videoPath;
   }
   
-  private static void initAndShowGUI() {
+  private static void initAndShowGUI(String path) {
     // This method is invoked on Swing thread
-    JFrame frame = new JFrame("FX");
+    
+    File f = new File(path);
+    
+    frame = new JFrame(f.getName());
     final JFXPanel fxPanel = new JFXPanel();
     frame.add(fxPanel);
     
     
-  
-    frame.setBounds(200, 100, 900, 600);
+    
+    frame.setBounds(0, 0, (int)(1920 * 0.9),(int) (1080 * 0.9));
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+    
     
     
     
@@ -71,17 +76,23 @@ public class Player2 {
       }
     });
   }
+  
+
 
   private static void initFX(JFXPanel fxPanel) {
     // This method is invoked on JavaFX thread
+    
     Scene scene = new SceneGenerator(videoPath).createScene();
+    
     fxPanel.setScene(scene);
+    
+    
   }
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override public void run() {
-        initAndShowGUI();
+        initAndShowGUI(videoPath);
       }
     });
   }
@@ -106,12 +117,14 @@ class SceneGenerator {
 
 
    final Media m = new Media(dir.toURI().toString());
+   
    final MediaPlayer mp = new MediaPlayer(m);
    final MediaView mv = new MediaView(mp);
    final DoubleProperty width = mv.fitWidthProperty();
    final DoubleProperty height = mv.fitHeightProperty();
    width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
    height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
+
    final Button play = new Button("Tocar");
    //mv.setPreserveRatio(true);
    layout.setStyle("-fx-background-color: cornsilk; -fx-font-size: 20; -fx-padding: 20; -fx-alignment: center;");
@@ -120,9 +133,12 @@ class SceneGenerator {
       VBoxBuilder.create().spacing(10).alignment(Pos.CENTER).children(
         
         mv,
-        HBoxBuilder.create().spacing(10).alignment(Pos.CENTER).children(play).build()
+        VBoxBuilder.create().spacing(10).alignment(Pos.BOTTOM_LEFT).children(play).build()
       ).build()
    );
+   
+   //mp.setOnReady(() -> layout.getScene().getRoot().sizeToScene());
+   
    
    mp.setOnEndOfMedia(new Runnable() {
         @Override
@@ -131,25 +147,45 @@ class SceneGenerator {
         }
     });
    
+   mp.setOnReady(new Runnable() {
+        @Override
+        public void run() {
+            mp.setAutoPlay(true);
+            play.setText("Pausar");
+            if(Player2.frame.getWidth() != m.getWidth() && Player2.frame.getHeight()!= (m.getHeight()+120)){
+                Player2.frame.setBounds(0, 0, m.getWidth(), m.getHeight()+120);
+                Player2.frame.setLocationRelativeTo(null);
+            }
+            play.setText("Pausar");
+        }
+    });
+   
    play.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if ("Pause".equals(play.getText())) {
+           
+            
+            if(Player2.frame.getWidth() != m.getWidth() && Player2.frame.getHeight()!= (m.getHeight()+120)){
+                Player2.frame.setBounds(0, 0, m.getWidth(), m.getHeight()+120);
+                Player2.frame.setLocationRelativeTo(null);
+            }
+            
+            if ("Pausar".equals(play.getText())) {
                 mv.getMediaPlayer().pause();
                 play.setText("Tocar");
             } else if ("Repetir".equals(play.getText())){
                mp.seek(mp.getStartTime());
-               play.setText("Pause");
+               play.setText("Pausar");
             }
             else{
                 mv.getMediaPlayer().play();
-                play.setText("Pause");   
+                play.setText("Pausar");   
                     
               }
         }
     });
-   layout.getChildren().add(1, play);
-   return new Scene(layout, m.getWidth(), m.getHeight());
+   //layout.getChildren().add(1, play);
+   return new Scene(layout, (int)(1920*0.8),(int) (1080*0.8));
 
   }  
 }

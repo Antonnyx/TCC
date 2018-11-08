@@ -44,7 +44,8 @@ public class EditorPopupMenu extends JPopupMenu
                             if(!cell.getVideoPath().equals("")){
                          
                                 try{
-                                    Player2.setVideoPath(cell.getVideoPath());
+                                    String pathName = cell.getVideoPath();
+                                    Player2.setVideoPath(pathName);
                                     Player2.main(null);
                                     
                                     //p.playVideo(cell.getVideoPath());
