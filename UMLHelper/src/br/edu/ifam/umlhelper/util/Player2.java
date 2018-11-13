@@ -17,6 +17,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,10 +26,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.HBoxBuilder;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -46,6 +50,7 @@ import javax.swing.WindowConstants;
  */
 public class Player2 {
   private static String videoPath;
+  
   static JFrame frame;
   public static void setVideoPath(String videoPath){
       Player2.videoPath = videoPath;
@@ -99,13 +104,19 @@ public class Player2 {
 }
 
 class SceneGenerator {    
-  final Label currentlyPlaying = new Label();
-  final ProgressBar progress = new ProgressBar();
-  private ChangeListener<Duration> progressChangeListener;
-  private String videoPath;
-  public SceneGenerator(String videoPath){
-      this.videoPath = videoPath;
+    
+   
+    
+    private ChangeListener<Duration> progressChangeListener;
+    private String videoPath;
+    protected static String videoStatus = "";
+    final ProgressBar progress = new ProgressBar();
+    public SceneGenerator(String videoPath){
+        this.videoPath = videoPath;
+        
   }
+  
+
   
   public Scene createScene() {
       
@@ -120,30 +131,83 @@ class SceneGenerator {
    
    final MediaPlayer mp = new MediaPlayer(m);
    final MediaView mv = new MediaView(mp);
+   
    final DoubleProperty width = mv.fitWidthProperty();
    final DoubleProperty height = mv.fitHeightProperty();
-   width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
-   height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
-
-   final Button play = new Button("Tocar");
+   //width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
+   //height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
+   
+    //PLAY IMAGE CREATION
+    Image playI=new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/play_icon.png"));
+    ImageView play1=new ImageView(playI);
+    play1.setFitHeight(50);
+    play1.setFitWidth(69);
+    //STOP IMAGE CREATION
+    Image stopI =new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/stop_icon.png"));
+    ImageView stop1=new ImageView(stopI);
+    stop1.setFitHeight(50);
+    stop1.setFitWidth(69);
+    //REWIND IMAGE CREATION
+    Image rewindI =new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/back_icon.png"));
+    ImageView rewind1=new ImageView(rewindI);
+    rewind1.setFitHeight(50);
+    rewind1.setFitWidth(69);
+    //FORWARD IMAGE CREATION
+    Image forwardI =new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/forward_icon.png"));
+    ImageView forward1=new ImageView(forwardI);
+    forward1.setFitHeight(50);
+    forward1.setFitWidth(69);    
+    
+            
+   final Button play = new Button("", play1);
+   final Button rewind = new Button("", rewind1);
+   final Button forward = new Button("", forward1);
+   
+   progress.setPrefWidth(1000);
+   
    //mv.setPreserveRatio(true);
-   layout.setStyle("-fx-background-color: cornsilk; -fx-font-size: 20; -fx-padding: 20; -fx-alignment: center;");
-   layout.getChildren().addAll(
-      
-      VBoxBuilder.create().spacing(10).alignment(Pos.CENTER).children(
         
-        mv,
-        VBoxBuilder.create().spacing(10).alignment(Pos.BOTTOM_LEFT).children(play).build()
-      ).build()
-   );
+        //VBox pBar = VBoxBuilder.create().spacing(10).alignment(Pos).children(progress).build();
+        HBox controls = HBoxBuilder.create().spacing(10).alignment(Pos.BOTTOM_CENTER).children(rewind, play, forward).build();
+        VBox video = VBoxBuilder.create().spacing(10).alignment(Pos.TOP_CENTER).children(mv, progress, controls).build();
+        //VBox controls = VBoxBuilder.create().spacing(10).alignment(Pos.BOTTOM_CENTER).children(play).build();
+        
+   layout.setStyle("-fx-background-color: cornsilk; -fx-font-size: 20; -fx-padding: 20; -fx-alignment: center;");
+   
+   layout.getChildren().addAll(video);
+      
+     
    
    //mp.setOnReady(() -> layout.getScene().getRoot().sizeToScene());
+ 
+   
+   
+   rewind.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            mp.seek(mp.getStartTime());
+            play.setGraphic(stop1);
+            videoStatus = "Pausar";
+        }
+    });
+   
+   forward.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            mp.seek(mp.getTotalDuration());
+            play.setGraphic(play1);
+            videoStatus = "Repetir";
+        }
+    });
+   
    
    
    mp.setOnEndOfMedia(new Runnable() {
         @Override
         public void run() {
-            play.setText("Repetir");
+            play.setGraphic(play1);
+            videoStatus = "Repetir";
+            progress.setProgress(100);
         }
     });
    
@@ -151,41 +215,73 @@ class SceneGenerator {
         @Override
         public void run() {
             mp.setAutoPlay(true);
-            play.setText("Pausar");
-            if(Player2.frame.getWidth() != m.getWidth() && Player2.frame.getHeight()!= (m.getHeight()+120)){
-                Player2.frame.setBounds(0, 0, m.getWidth(), m.getHeight()+120);
+            videoStatus = "Pausar";
+            play.setGraphic(stop1);
+            if(Player2.frame.getWidth() != m.getWidth()+20 && Player2.frame.getHeight()!= (m.getHeight()+170)){
+                Player2.frame.setBounds(0, 0, m.getWidth()+20, m.getHeight()+170);
                 Player2.frame.setLocationRelativeTo(null);
+                progress.setPrefWidth(Player2.frame.getWidth());
             }
-            play.setText("Pausar");
+            
+            setCurrentlyPlaying(mv.getMediaPlayer());
         }
     });
+   
+   
    
    play.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
            
             
-            if(Player2.frame.getWidth() != m.getWidth() && Player2.frame.getHeight()!= (m.getHeight()+120)){
-                Player2.frame.setBounds(0, 0, m.getWidth(), m.getHeight()+120);
+            if(Player2.frame.getWidth() != m.getWidth()+20 && Player2.frame.getHeight()!= (m.getHeight()+170)){
+                
+                Player2.frame.setBounds(0, 0, m.getWidth()+20, m.getHeight()+170);
                 Player2.frame.setLocationRelativeTo(null);
+                progress.setPrefWidth(Player2.frame.getWidth());
+                
             }
             
-            if ("Pausar".equals(play.getText())) {
+            if ("Pausar".equals(videoStatus)) {
                 mv.getMediaPlayer().pause();
-                play.setText("Tocar");
-            } else if ("Repetir".equals(play.getText())){
+                play.setGraphic(play1);
+                videoStatus = "Tocar";
+            } else if ("Repetir".equals(videoStatus)){
                mp.seek(mp.getStartTime());
-               play.setText("Pausar");
+               play.setGraphic(stop1);
+               videoStatus = "Pausar";
+               
             }
             else{
                 mv.getMediaPlayer().play();
-                play.setText("Pausar");   
-                    
+                play.setGraphic(stop1);
+                videoStatus = "Pausar"; 
+                              
               }
         }
     });
+   
+    mv.mediaPlayerProperty().addListener(new ChangeListener<MediaPlayer>() {
+      @Override public void changed(ObservableValue<? extends MediaPlayer> observableValue, MediaPlayer oldPlayer, MediaPlayer newPlayer) {
+        setCurrentlyPlaying(newPlayer);
+      }
+
+   
+    });
    //layout.getChildren().add(1, play);
+   
+   
    return new Scene(layout, (int)(1920*0.8),(int) (1080*0.8));
 
-  }  
+  }
+ private void setCurrentlyPlaying(MediaPlayer newPlayer) {
+        progress.setProgress(0);
+        progressChangeListener = new ChangeListener<Duration>() {
+        @Override 
+        public void changed(ObservableValue<? extends Duration> observableValue, Duration oldValue, Duration newValue) {
+            progress.setProgress(1.0 * newPlayer.getCurrentTime().toMillis() / newPlayer.getTotalDuration().toMillis());
+        }
+        };
+        newPlayer.currentTimeProperty().addListener(progressChangeListener);
+    }  
 }

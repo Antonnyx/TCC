@@ -1,6 +1,13 @@
 package br.edu.ifam.umlhelper.model;
 
 import br.edu.ifam.umlhelper.model.EditorActions.ColorAction;
+import br.edu.ifam.umlhelper.model.EditorActions.HistoryAction;
+import br.edu.ifam.umlhelper.model.EditorActions.NewAction;
+import br.edu.ifam.umlhelper.model.EditorActions.OpenAction;
+import br.edu.ifam.umlhelper.model.EditorActions.PrintAction;
+import br.edu.ifam.umlhelper.model.EditorActions.SaveAction;
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
+import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -25,6 +32,9 @@ import com.mxgraph.util.mxResources;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JButton;
 
 public class EditorToolBar extends JToolBar
 {
@@ -40,31 +50,58 @@ public class EditorToolBar extends JToolBar
 	 * @param orientation
 	 */
 	private boolean ignoreZoomChange = false;
-
+        private TelaCriarDiagramaCasoDeUso tela;
+        private MouseListener jButtonToolBarNovoListener;
+        private MouseListener jButtonToolBarAbrirListener;
+        private MouseListener jButtonToolBarSalvarListener;
+        private MouseListener jButtonToolBarImprimirListener;
+        private MouseListener jButtonToolBarApagarListener;
+        private MouseListener jButtonToolBarDesfazerListener;
+        private MouseListener jButtonToolBarFonteListener;
+        private MouseListener jButtonToolBarTamanhoListener;
+        private MouseListener jButtonToolBarCorListener;
+        private MouseListener jButtonToolBarAmpliarListener;
+        
 	/**
 	 * 
 	 */
-	public EditorToolBar(final Editor editor, int orientation)
-	{
+
+        
+	public EditorToolBar(final Editor editor, int orientation, TelaCriarDiagramaCasoDeUso tela)
+	{  
+                
 		super(orientation);
+                this.tela = tela;
+                initToolBarListener();
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createEmptyBorder(3, 3, 3, 3), getBorder()));
 		setFloatable(false);
-                /*
+                
+                
 		add(editor.bind("New", new NewAction(),
-				"/images/new.gif"));
+				"/images/new.gif")).addMouseListener(jButtonToolBarNovoListener);
+                addSeparator();
 		add(editor.bind("Open", new OpenAction(),
-				"/images/open.gif"));
+				"/images/open.gif")).addMouseListener(jButtonToolBarAbrirListener);
+                addSeparator();
 		add(editor.bind("Save", new SaveAction(false),
-				"/images/save.gif"));
+				"/images/save.gif")).addMouseListener(jButtonToolBarSalvarListener);
 
 		addSeparator();
 
 		add(editor.bind("Print", new PrintAction(),
-				"/images/print.gif"));
+				"/images/print.gif")).addMouseListener(jButtonToolBarImprimirListener);
+
+		addSeparator();
+                add(editor.bind("Delete", mxGraphActions.getDeleteAction(),
+				"/images/delete.gif")).addMouseListener(jButtonToolBarApagarListener);
 
 		addSeparator();
 
+		add(editor.bind("Undo", new HistoryAction(true),
+				"/images/undo.gif")).addMouseListener(jButtonToolBarDesfazerListener);
+                addSeparator();
+/*
 		add(editor.bind("Cut", TransferHandler.getCutAction(),
 				"/images/cut.gif"));
 		add(editor.bind("Copy", TransferHandler.getCopyAction(),
@@ -101,8 +138,8 @@ public class EditorToolBar extends JToolBar
 		fontCombo.setMinimumSize(new Dimension(120, 0));
 		fontCombo.setPreferredSize(new Dimension(120, 0));
 		fontCombo.setMaximumSize(new Dimension(120, 100));
-		add(fontCombo);
-
+		add(fontCombo).addMouseListener(jButtonToolBarFonteListener);
+                addSeparator();
 		fontCombo.addActionListener(new ActionListener()
 		{
 			/**
@@ -127,7 +164,7 @@ public class EditorToolBar extends JToolBar
 		sizeCombo.setMinimumSize(new Dimension(65, 0));
 		sizeCombo.setPreferredSize(new Dimension(65, 0));
 		sizeCombo.setMaximumSize(new Dimension(65, 100));
-		add(sizeCombo);
+		add(sizeCombo).addMouseListener(jButtonToolBarTamanhoListener);
 
 		sizeCombo.addActionListener(new ActionListener()
 		{
@@ -173,7 +210,7 @@ public class EditorToolBar extends JToolBar
               */  
 		add(editor.bind("Fill", new ColorAction("Fill",
 				mxConstants.STYLE_FILLCOLOR),
-				"/images/fillcolor.gif"));
+				"/images/fillcolor.gif")).addMouseListener(jButtonToolBarCorListener);
 
 		addSeparator();
                 
@@ -187,7 +224,7 @@ public class EditorToolBar extends JToolBar
 		zoomCombo.setPreferredSize(new Dimension(75, 0));
 		zoomCombo.setMaximumSize(new Dimension(75, 100));
 		zoomCombo.setMaximumRowCount(9);
-		add(zoomCombo);
+		add(zoomCombo).addMouseListener(jButtonToolBarAmpliarListener);
 
 		// Sets the zoom in the zoom combo the current value
 		mxIEventListener scaleTracker = new mxIEventListener()
@@ -272,4 +309,268 @@ public class EditorToolBar extends JToolBar
 			}
 		});
 	}
+        private void initToolBarListener(){
+            jButtonToolBarNovoListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Novo"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            
+            jButtonToolBarAbrirListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Abrir"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarSalvarListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Salvar"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarImprimirListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Imprimir"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarApagarListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Apagar"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarDesfazerListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Desfazer"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarFonteListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Fonte"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarTamanhoListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Tamanho"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarCorListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Cor"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            jButtonToolBarAmpliarListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                   
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Ampliar"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    tela.limparPainelAcessivel();
+                }
+            };
+            
+        }
 }

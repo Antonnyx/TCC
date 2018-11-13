@@ -258,6 +258,7 @@ public class EditorMenuBar extends JMenuBar
 
 		menu.add(editor.bind(mxResources.get("save"), new SaveAction(false), "/images/save.gif")).addMouseListener(jMenuItemMouseListener);
 		menu.add(editor.bind(mxResources.get("saveAs"), new SaveAction(true), "/images/saveas.gif")).addMouseListener(jMenuItemMouseListener);
+                
 
 		menu.addSeparator();
 

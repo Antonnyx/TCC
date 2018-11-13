@@ -7,35 +7,58 @@ package br.edu.ifam.umlhelper.view;
 
 import br.edu.ifam.umlhelper.model.Editor;
 import br.edu.ifam.umlhelper.model.Editor.CustomGraph;
+import br.edu.ifam.umlhelper.model.EditorActions;
+import br.edu.ifam.umlhelper.model.EditorActions.ExitAction;
+import br.edu.ifam.umlhelper.model.EditorActions.HistoryAction;
+import br.edu.ifam.umlhelper.model.EditorActions.NewAction;
+import br.edu.ifam.umlhelper.model.EditorActions.OpenAction;
+import br.edu.ifam.umlhelper.model.EditorActions.SaveAction;
+import br.edu.ifam.umlhelper.model.EditorSobreFrame;
 import br.edu.ifam.umlhelper.model.EditorToolBar;
 import br.edu.ifam.umlhelper.model.Paletas;
+import com.mxgraph.model.mxCell;
+import com.mxgraph.swing.util.mxGraphActions;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxEventSource;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import view.CriarDiagramaTela;
 import view.CriarTelaDiagramaCasoDeUso;
 
@@ -48,11 +71,14 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     /**
      * Creates new form TelaCriarDiagramaCasoDeUso
      */
-    private Editor editor;
+    private static Editor editor;
     private String tituloTela = "Criar Diagrama de Caso de Uso";
     private MouseListener jMenuMouseListener;
     private MouseListener jMenuItemMouseListener;
     private MouseListener jLabelMouseListener;
+    private MouseListener cellListener;
+    private MouseAdapter closeTabbedPaneListener;
+    private boolean painelAcessivelDisponivel = true;
     
     
     
@@ -63,20 +89,152 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         inicializarPaletaUML();
         inserirBarraFerramentas();
         initListenersDeAcessibilidade();
+        initActionListeners();
         setTitle(tituloTela);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
+        setResizable(false);
     }
     
+    class MyCloseActionHandler implements ActionListener {
+
+        public void actionPerformed(ActionEvent evt) {
+            JTabbedPane tabPane = (JTabbedPane)evt.getSource();
+            Component selected = tabPane.getSelectedComponent();
+            if (selected != null) {
+
+                tabPane.remove(selected);
+                // It would probably be worthwhile getting the source
+                // casting it back to a JButton and removing
+                // the action handler reference ;)
+
+            }
+
+        }
+
+    }
+    
+      
+    class MyCloseButton extends JButton{
+
+        public MyCloseButton() {
+            setName("x");
+            setBorder(BorderFactory.createEmptyBorder());
+            addActionListener(new MyCloseActionHandler());
+        }
+        
+    
+    }
+    
+    
+    
     private void initGUI(){
-        editor = new Editor();
-        painelUML.add(editor);
-        painelUML.setTitleAt(0, "Novo");
+        editor = new Editor(this);
+        painelUML.addTab("Novo", editor);
+        //painelUML.setTitleAt(0, "Novo");
         this.setExtendedState(JFrame.MAXIMIZED_HORIZ);
         
     }
     
+    public void addNewGraph(String title){
+        Editor ed = new Editor(this);
+        painelUML.addTab(title,ed);
+        
+        int pos = painelUML.getComponentCount() - 1;
+        painelUML.setSelectedIndex(pos);
+        ed.getGraphComponent().zoomAndCenter();
+        
+    }
+    
+    public static Editor getEditor(){
+        return editor;
+    }
+    
+    private void showCloseTabbedPanePopup(MouseEvent e)
+    {
+        MouseEvent fecharEvent = e;
+        JPopupMenu closePopup = new JPopupMenu();
+        JMenuItem jMenuFechar = new JMenuItem("Fechar");
+        jMenuFechar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTabbedPane tabPane = (JTabbedPane)fecharEvent.getSource();
+                Component selected = tabPane.getSelectedComponent();
+                if (selected != null ) {
+                    if(tabPane.getComponentCount() > 1){
+                        tabPane.remove(selected);
+                    }
+                    
+                    
+                // It would probably be worthwhile getting the source
+                // casting it back to a JButton and removing
+                // the action handler reference ;)
+
+                }
+            }
+            });
+        closePopup.add(jMenuFechar);
+        closePopup.show(painelUML, fecharEvent.getX(), fecharEvent.getY());
+        closePopup.setVisible(true);
+        
+    
+    }
+    
+    private void initActionListeners(){
+        painelUML.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                editor = (Editor) painelUML.getComponent(painelUML.getSelectedIndex());
+                
+            }
+        });
+        
+        
+        
+        closeTabbedPaneListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON3)
+                {
+                    showCloseTabbedPanePopup(e);
+                }
+            }
+            
+        };
+        
+        painelUML.addMouseListener(closeTabbedPaneListener);
+        
+        jMenuArquivoNovo.addActionListener(editor.bind("Novo", new NewAction(), null));
+        jMenuArquivoNovo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/new.gif")));
+        
+        jMenuArquivoAbrir.addActionListener(editor.bind("Abrir", new OpenAction(), null));
+        jMenuArquivoAbrir.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/open.gif")));
+        
+        jMenuArquivoSalvar.addActionListener(editor.bind("Salvar", new SaveAction(false), null));
+        jMenuArquivoSalvar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/save.gif")));
+        
+        jMenuArquivoSalvarComo.addActionListener(editor.bind("Salvar", new SaveAction(true), null));
+        jMenuArquivoSalvarComo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/saveas.gif")));
+        
+        jMenuArquivoSair.addActionListener(editor.bind("Salvar", new ExitAction()));
+        
+        
+        jMenuEditarApagar.addActionListener(editor.bind("Apagar", mxGraphActions.getDeleteAction()));
+        jMenuEditarApagar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/delete.gif")));
+        
+        jMenuEditarEditar.addActionListener(editor.bind("Editar", mxGraphActions.getEditAction()));
+        
+        jMenuEditarDesfazer.addActionListener(editor.bind("Desfazer", new HistoryAction(true)));
+        jMenuEditarDesfazer.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/undo.gif")));
+        
+        jMenuEditarDesfazer.addActionListener(editor.bind("Editar", mxGraphActions.getEditAction()));
+        
+        
+       
+    }
+    
     //Inicia paleta com elementos para o Diagrama de Caso de Uso
-    //Ator, Caso de Uso, Agregação
+    //Ator, Caso de Uso, Agregação 
     private void inicializarPaletaUML(){
         Paletas paletaUML = inserirPaleta("UML");
         paletaUML.addListener(mxEvent.SELECT, new mxEventSource.mxIEventListener()
@@ -93,16 +251,25 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                             if (editor.getGraph().getModel().isEdge(cell))
                             {
                                     ((CustomGraph) editor.getGraph()).setEdgeTemplate(cell);
+                                    
                             }
                     }
             }
 
 	});
         paletaUML.addTemplate("Ator",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/actor.png")),
-                "shape=actor", 120, 160, "");
-        paletaUML.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/straight.png")),
-                "straight", 120, 120, "");  
-        paletaUML.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/ellipse.png")),"ellipse", 160, 100, "");
+                "shape=actor;fillColor=#FFFF99;gradientColor=#FFFF99;fontSize=20", 120, 160, "");
+        paletaUML.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/associacao.png")),
+                "straight;strokeWidth=4;endArrow=none", 120, 120, "");  
+        paletaUML.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/ellipse.png")),"ellipse;fillColor=#FFFF99;gradientColor=#FFFF99;fontSize=20", 160, 100, "");
+        paletaUML.addEdgeTemplate("Incluir",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/include.png")),
+                "straight;dashed=1;strokeWidth=4;fontSize=20", 120, 120, "<<include>>");
+        paletaUML.addEdgeTemplate("Estender",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/extend.png")),
+                "straight;dashed=1;strokeWidth=4;fontSize=20", 120, 120, "<<extend>>");
+        paletaUML.addEdgeTemplate("Generalizar",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/straight.png")),
+                "straight;strokeWidth=4", 120, 120, "");
+        paletaUML.addTemplate("Subsistema",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
+                "fillColor=#FFFFFF;gradientColor=#FFFFFF;verticalAlign=top;align=left;fontSize=20", 120, 120, "<<Subsystem>>");
         painelPaletas.add(paletaUML);
         painelPaletas.setTitleAt(0, "UML");
         
@@ -110,6 +277,9 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     
     
     private void initListenersDeAcessibilidade(){
+        
+ 
+        
         jMenuMouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -194,6 +364,8 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
             }
         };         
         
+       
+        
         //Listeners de acessibilidade para os JMENU
         jMenuArquivo.addMouseListener(jMenuMouseListener);
         jMenuEditar.addMouseListener(jMenuMouseListener);
@@ -213,10 +385,15 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         jMenuOpcoesDatilologiaOn.addMouseListener(jMenuItemMouseListener);
         jMenuOpcoesDatilologiaOff.addMouseListener(jMenuItemMouseListener);
         
+        jMenuAjuda.addMouseListener(jMenuMouseListener);
+        jMenuSobre.addMouseListener(jMenuItemMouseListener);
+        
     }
     
     public void atualizarPainelAcessivel(ArrayList<JLabel> listaLabels){
+        
         painelAcessivel.setLayout(new FlowLayout());        
+        painelAcessivel.setBackground(Color.WHITE);
         for(JLabel lbl: listaLabels){
             painelAcessivel.add(lbl);
         }
@@ -226,10 +403,15 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     
     public void ligarAcessibilidade(){
         painelAcessivel.setVisible(true);
+        painelAcessivelDisponivel = true;
+        
     }
     
     public void desligarAcessibilidade(){
         painelAcessivel.setVisible(false);
+        painelAcessivelDisponivel = false;        
+        
+        
     }
     
     public void limparPainelAcessivel(){
@@ -240,11 +422,14 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     }
     
     private void inserirBarraFerramentas(){
-        EditorToolBar ferramentas = new EditorToolBar(editor, JToolBar.HORIZONTAL);
+        EditorToolBar ferramentas = new EditorToolBar(editor, JToolBar.HORIZONTAL, this);
         painelFerramentasToolBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         for(Component c: ferramentas.getComponents()){
             painelFerramentasToolBar.add(c);
         }
+        painelFerramentas.setEnabled(false);
+        painelFerramentasToolBar.setEnabled(false);
+        
 
     }
     
@@ -253,7 +438,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     //Método que devolve a estrutura de uma Paleta
     public Paletas inserirPaleta(String title)
     {
-            Paletas paleta = new Paletas();
+            Paletas paleta = new Paletas(this);
             JTabbedPane painelUML = new JTabbedPane();
             final JScrollPane scrollPane = new JScrollPane(paleta);
             scrollPane
@@ -324,11 +509,14 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         jMenuOpcoes = new javax.swing.JMenu();
         jMenuOpcoesDatilologiaOn = new javax.swing.JMenuItem();
         jMenuOpcoesDatilologiaOff = new javax.swing.JMenuItem();
+        jMenuAjuda = new javax.swing.JMenu();
+        jMenuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1000));
 
         painelAcessivel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        painelAcessivel.setPreferredSize(new java.awt.Dimension(1902, 104));
 
         javax.swing.GroupLayout painelAcessivelLayout = new javax.swing.GroupLayout(painelAcessivel);
         painelAcessivel.setLayout(painelAcessivelLayout);
@@ -338,7 +526,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         );
         painelAcessivelLayout.setVerticalGroup(
             painelAcessivelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 78, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         painelFerramentas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -430,6 +618,18 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuOpcoes);
 
+        jMenuAjuda.setText("Ajuda");
+
+        jMenuSobre.setText("Sobre UMLHelper");
+        jMenuSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuSobreActionPerformed(evt);
+            }
+        });
+        jMenuAjuda.add(jMenuSobre);
+
+        jMenuBar1.add(jMenuAjuda);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -459,7 +659,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(painelPaletas, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(painelUML))
                 .addGap(733, 733, 733))
@@ -476,6 +676,16 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private void jMenuOpcoesDatilologiaOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOpcoesDatilologiaOffActionPerformed
         desligarAcessibilidade();
     }//GEN-LAST:event_jMenuOpcoesDatilologiaOffActionPerformed
+
+    private void jMenuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSobreActionPerformed
+        EditorSobreFrame sobre = new EditorSobreFrame(this);
+        sobre.setModal(true);
+        int x = this.getX() + (this.getWidth() - sobre.getWidth()) / 2;
+        int y = this.getY() + (this.getHeight() - sobre.getHeight()) / 2;
+        sobre.setLocation(x, y);
+        sobre.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuSobreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -513,6 +723,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenuAjuda;
     private javax.swing.JMenu jMenuArquivo;
     private javax.swing.JMenuItem jMenuArquivoAbrir;
     private javax.swing.JMenuItem jMenuArquivoNovo;
@@ -527,6 +738,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuOpcoes;
     private javax.swing.JMenuItem jMenuOpcoesDatilologiaOff;
     private javax.swing.JMenuItem jMenuOpcoesDatilologiaOn;
+    private javax.swing.JMenuItem jMenuSobre;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel painelAcessivel;
     private javax.swing.JPanel painelFerramentas;
@@ -535,3 +747,4 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private javax.swing.JTabbedPane painelUML;
     // End of variables declaration//GEN-END:variables
 }
+

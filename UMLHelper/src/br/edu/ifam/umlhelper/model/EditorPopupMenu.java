@@ -63,6 +63,39 @@ public class EditorPopupMenu extends JPopupMenu
                       
                     }
                 };
+                Action tocarVideoLibrasAction = new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        
+                        Object source = e.getSource();
+                        
+                        if (source instanceof mxGraphComponent)
+                        {
+                            
+                            mxGraph graph = ((mxGraphComponent) source).getGraph();
+                            mxCell cell = (mxCell) graph.getSelectionCell();
+                            if(!cell.getVideoPathLibras().equals("")){
+                         
+                                try{
+                                    String pathName = cell.getVideoPathLibras();
+                                    Player2.setVideoPath(pathName);
+                                    Player2.main(null);
+                                    
+                                    //p.playVideo(cell.getVideoPath());
+                                }catch(Exception ex){
+                                    //p.playVideo(cell.getVideoPath());
+                                    ex.printStackTrace();
+                                           
+                                }
+                                
+                            }else{
+                                JOptionPane.showMessageDialog(null,"Elemento não possui video de Libras");
+                            }
+                            
+                        }
+                      
+                    }
+                };
                 
                 add(
 				editor.bind("Add Video", mxGraphActions
@@ -77,10 +110,25 @@ public class EditorPopupMenu extends JPopupMenu
 						null))
 				.setEnabled(selected);
                 
+                add(
+				editor.bind("Add Video Libras", mxGraphActions
+						.getAddVideoLibrasAction(),null))
+				.setEnabled(selected);
+                
+                
+		addSeparator();
+		add(
+				editor.bind("Del Video Libras", mxGraphActions
+						.getRemoveVideoLibrasAction(),
+						null))
+				.setEnabled(selected);
+                
 
 		addSeparator();
                 add(editor.bind("Tocar Video", tocarVideoAction ,null)).setEnabled(selected);
-                
+
+		addSeparator();
+                add(editor.bind("Tocar Video Libras", tocarVideoLibrasAction ,null)).setEnabled(selected);                
 
 		addSeparator();
                 /*

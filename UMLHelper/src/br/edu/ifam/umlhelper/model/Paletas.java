@@ -5,6 +5,8 @@
  */
 package br.edu.ifam.umlhelper.model;
 
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
+import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -16,8 +18,6 @@ import com.mxgraph.util.mxEventSource;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
-import editor.EditorPalette;
-import editor.ShadowBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -32,16 +32,13 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
 /**
@@ -53,11 +50,12 @@ public class Paletas extends JPanel{
     private JLabel uml = null;
     private mxEventSource eventSource = new mxEventSource(this);
     private Color gradientColor = new Color(117, 195, 173);
+    private TelaCriarDiagramaCasoDeUso tela;
+    private MouseListener jLabelMouseListener;
     
-    
-    public Paletas()
+    public Paletas(TelaCriarDiagramaCasoDeUso tela)
     {
-       
+        this.tela = tela;
         setBackground(new Color(149, 230, 190));
         setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
         
@@ -80,7 +78,7 @@ public class Paletas extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                
+ 
             }
 
             @Override
@@ -96,8 +94,10 @@ public class Paletas extends JPanel{
                     return true;
             }
         });
+        
   
     }
+    
     
 
     
@@ -249,6 +249,8 @@ public class Paletas extends JPanel{
                      */
                     public void mouseEntered(MouseEvent e)
                     {
+                        JLabel jLabel = (JLabel) e.getComponent();
+                        tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jLabel.getText().toLowerCase()));   
                     }
 
                     /*
@@ -257,6 +259,7 @@ public class Paletas extends JPanel{
                      */
                     public void mouseExited(MouseEvent e)
                     {
+                        tela.limparPainelAcessivel();
                     }
 
                     /*

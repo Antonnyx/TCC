@@ -5,6 +5,8 @@
  */
 package br.edu.ifam.umlhelper.model;
 
+import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
+import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
 import com.mxgraph.io.mxCodec;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
@@ -32,6 +34,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.File;
@@ -41,6 +44,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -63,6 +67,7 @@ public class Editor extends JPanel{
     private mxKeyboardHandler keyboardHandler;
     private File currentFile;
     private boolean modified = false;
+    private TelaCriarDiagramaCasoDeUso tela;
     
     
     static
@@ -76,8 +81,14 @@ public class Editor extends JPanel{
                     // ignore
             }
     }
+    
+    public TelaCriarDiagramaCasoDeUso getTela(){
+        return this.tela;
+    }
+    
         
-    public Editor(){
+    public Editor(TelaCriarDiagramaCasoDeUso tela){
+        this.tela = tela;
         setLayout(new BorderLayout());
         graphComponent = new CustomGraphComponent(new CustomGraph());
         graph = graphComponent.getGraph();
@@ -191,6 +202,54 @@ public class Editor extends JPanel{
                 }
 
         });
+        
+        /*
+        graphComponent.getGraphControl().addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mxCell cell = (mxCell) graphComponent.getCellAt(e.getPoint().x, e.getPoint().y);
+                if(cell != null)
+                {
+                    System.out.println("é cell");
+                    System.out.println(cell.getStyle());
+                    String palavra = "";
+                    switch(cell.getStyle())
+                    {
+                        case "shape=actor":
+                            palavra = "Ator";
+                            break;
+                    }
+                    tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(palavra));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mxCell cell = (mxCell) graphComponent.getCellAt(e.getPoint().x, e.getPoint().y);
+                if(cell != null)
+                {
+                    System.out.println("Saí");
+                    tela.limparPainelAcessivel();
+                }
+                
+            }
+        });*/
+       
     }
     
     public void exit()
@@ -199,7 +258,7 @@ public class Editor extends JPanel{
 
             if (frame != null)
             {
-                    frame.dispose();
+                    System.exit(0);
             }
     }
     
@@ -260,7 +319,7 @@ public class Editor extends JPanel{
     
         public Paletas inserirPaleta(String title)
     {
-            Paletas paleta = new Paletas();
+            Paletas paleta = new Paletas(this.tela);
             JTabbedPane painelUML = new JTabbedPane();
             final JScrollPane scrollPane = new JScrollPane(paleta);
             scrollPane

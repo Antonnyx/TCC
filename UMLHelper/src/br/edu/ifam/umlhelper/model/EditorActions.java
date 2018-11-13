@@ -3,6 +3,7 @@
  */
 package br.edu.ifam.umlhelper.model;
 
+import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -94,7 +95,7 @@ public class EditorActions
 				component = component.getParent();
 			}
 
-			return (Editor) component;
+			return TelaCriarDiagramaCasoDeUso.getEditor();
 		}
 
 		return null;
@@ -1375,13 +1376,16 @@ public class EditorActions
 		public void actionPerformed(ActionEvent e)
 		{
 			Editor editor = getEditor(e);
-
+                        String resposta = JOptionPane.showInputDialog(null, "Escolha o nome do novo Diagrama");
+                        editor.getTela().addNewGraph(resposta);
+                        /*
 			if (editor != null)
 			{
 				if (!editor.isModified()
 						|| JOptionPane.showConfirmDialog(editor,
 								mxResources.get("loseChanges")) == JOptionPane.YES_OPTION)
 				{
+                                    
 					mxGraph graph = editor.getGraphComponent().getGraph();
 
 					// Check modified flag and display save dialog
@@ -1392,8 +1396,13 @@ public class EditorActions
 					editor.setModified(false);
 					editor.setCurrentFile(null);
 					editor.getGraphComponent().zoomAndCenter();
+                                    
+                                    System.out.println("null");
+                                    editor.getTela().addNewGraph(String title);
 				}
 			}
+                        */
+                        
 		}
 	}
 
