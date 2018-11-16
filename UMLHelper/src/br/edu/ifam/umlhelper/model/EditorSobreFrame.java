@@ -1,3 +1,11 @@
+
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
+ */
+
+
 package br.edu.ifam.umlhelper.model;
 
 import java.awt.BorderLayout;

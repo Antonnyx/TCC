@@ -5,42 +5,32 @@
  */
 package br.edu.ifam.umlhelper.util;
 
+import java.awt.Toolkit;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.HBoxBuilder;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaErrorEvent;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -54,6 +44,7 @@ public class Player2 {
   static JFrame frame;
   public static void setVideoPath(String videoPath){
       Player2.videoPath = videoPath;
+      
   }
   
   private static void initAndShowGUI(String path) {
@@ -68,8 +59,9 @@ public class Player2 {
     
     
     frame.setBounds(0, 0, (int)(1920 * 0.9),(int) (1080 * 0.9));
-    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     frame.setLocationRelativeTo(null);
+    frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Player2.class.getResource("/br/edu/ifam/umlhelper/images/java.png")));
     frame.setVisible(true);
     
     
@@ -121,30 +113,30 @@ class SceneGenerator {
   public Scene createScene() {
       
     
-    final StackPane layout = new StackPane();
+    StackPane layout = new StackPane();
 
     // determine the source directory for the playlist
-    final File dir = new File(this.videoPath);
-
+     File dir = new File(this.videoPath);
+    
 
    final Media m = new Media(dir.toURI().toString());
    
    final MediaPlayer mp = new MediaPlayer(m);
    final MediaView mv = new MediaView(mp);
    
-   final DoubleProperty width = mv.fitWidthProperty();
-   final DoubleProperty height = mv.fitHeightProperty();
+   DoubleProperty width = mv.fitWidthProperty();
+   DoubleProperty height = mv.fitHeightProperty();
    //width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
    //height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
    
     //PLAY IMAGE CREATION
     Image playI=new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/play_icon.png"));
-    ImageView play1=new ImageView(playI);
+    final ImageView play1=new ImageView(playI);
     play1.setFitHeight(50);
     play1.setFitWidth(69);
     //STOP IMAGE CREATION
     Image stopI =new Image(getClass().getResourceAsStream("/br/edu/ifam/umlhelper/images/stop_icon.png"));
-    ImageView stop1=new ImageView(stopI);
+    final ImageView stop1=new ImageView(stopI);
     stop1.setFitHeight(50);
     stop1.setFitWidth(69);
     //REWIND IMAGE CREATION
@@ -160,8 +152,8 @@ class SceneGenerator {
     
             
    final Button play = new Button("", play1);
-   final Button rewind = new Button("", rewind1);
-   final Button forward = new Button("", forward1);
+   Button rewind = new Button("", rewind1);
+   Button forward = new Button("", forward1);
    
    progress.setPrefWidth(1000);
    
@@ -179,7 +171,32 @@ class SceneGenerator {
      
    
    //mp.setOnReady(() -> layout.getScene().getRoot().sizeToScene());
- 
+   mp.setOnError(new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("MediaPlayer Erro:");
+            String message = mp.errorProperty().get().getMessage();
+            System.out.println(message);
+
+        }
+    });
+   
+   m.setOnError(new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("Media Erro:");
+            String message = m.errorProperty().get().getMessage();
+            System.out.println(message);
+        }
+    });
+   
+   mv.setOnError(new EventHandler<MediaErrorEvent>() {
+        @Override
+        public void handle(MediaErrorEvent event) {
+            System.out.println("Media View Erro:");
+            event.getMediaError().toString();
+        }
+    });
    
    
    rewind.setOnAction(new EventHandler<ActionEvent>() {
@@ -214,6 +231,9 @@ class SceneGenerator {
    mp.setOnReady(new Runnable() {
         @Override
         public void run() {
+             if(mv == null) {
+                 System.out.println("MediaView NULL");
+            }
             mp.setAutoPlay(true);
             videoStatus = "Pausar";
             play.setGraphic(stop1);
@@ -222,6 +242,7 @@ class SceneGenerator {
                 Player2.frame.setLocationRelativeTo(null);
                 progress.setPrefWidth(Player2.frame.getWidth());
             }
+            
             
             setCurrentlyPlaying(mv.getMediaPlayer());
         }
@@ -274,7 +295,7 @@ class SceneGenerator {
    return new Scene(layout, (int)(1920*0.8),(int) (1080*0.8));
 
   }
- private void setCurrentlyPlaying(MediaPlayer newPlayer) {
+ private void setCurrentlyPlaying(final MediaPlayer newPlayer) {
         progress.setProgress(0);
         progressChangeListener = new ChangeListener<Duration>() {
         @Override 

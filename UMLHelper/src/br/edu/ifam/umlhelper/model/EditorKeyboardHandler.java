@@ -1,6 +1,9 @@
-/**
- * Copyright (c) 2008, Gaudenz Alder
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
  */
+
 package br.edu.ifam.umlhelper.model;
 
 import javax.swing.ActionMap;

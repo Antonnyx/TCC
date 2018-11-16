@@ -1,11 +1,9 @@
 /* 
- * Copyright (c) 2001-2005, Gaudenz Alder
  * 
+ * Copyright (c) 2001-2014, JGraph Ltd
  * All rights reserved.
- * 
- * See LICENSE file for license details. If you are unable to locate
- * this file please contact info (at) jgraph (dot) com.
  */
+
 package br.edu.ifam.umlhelper.model;
 
 import java.awt.Color;

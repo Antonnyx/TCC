@@ -1,3 +1,11 @@
+
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
+ */
+
+
 package br.edu.ifam.umlhelper.model;
 
 import br.edu.ifam.umlhelper.model.EditorActions.ColorAction;
@@ -79,50 +87,29 @@ public class EditorToolBar extends JToolBar
                 
                 
 		add(editor.bind("New", new NewAction(),
-				"/images/new.gif")).addMouseListener(jButtonToolBarNovoListener);
+				"/br/edu/ifam/umlhelper/images/new.gif")).addMouseListener(jButtonToolBarNovoListener);
                 addSeparator();
 		add(editor.bind("Open", new OpenAction(),
-				"/images/open.gif")).addMouseListener(jButtonToolBarAbrirListener);
+				"/br/edu/ifam/umlhelper/images/open.gif")).addMouseListener(jButtonToolBarAbrirListener);
                 addSeparator();
 		add(editor.bind("Save", new SaveAction(false),
-				"/images/save.gif")).addMouseListener(jButtonToolBarSalvarListener);
+				"/br/edu/ifam/umlhelper/images/save.gif")).addMouseListener(jButtonToolBarSalvarListener);
 
 		addSeparator();
 
 		add(editor.bind("Print", new PrintAction(),
-				"/images/print.gif")).addMouseListener(jButtonToolBarImprimirListener);
+				"/br/edu/ifam/umlhelper/images/print.gif")).addMouseListener(jButtonToolBarImprimirListener);
 
 		addSeparator();
                 add(editor.bind("Delete", mxGraphActions.getDeleteAction(),
-				"/images/delete.gif")).addMouseListener(jButtonToolBarApagarListener);
+				"/br/edu/ifam/umlhelper/images/delete.gif")).addMouseListener(jButtonToolBarApagarListener);
 
 		addSeparator();
 
 		add(editor.bind("Undo", new HistoryAction(true),
-				"/images/undo.gif")).addMouseListener(jButtonToolBarDesfazerListener);
+				"/br/edu/ifam/umlhelper/images/undo.gif")).addMouseListener(jButtonToolBarDesfazerListener);
                 addSeparator();
-/*
-		add(editor.bind("Cut", TransferHandler.getCutAction(),
-				"/images/cut.gif"));
-		add(editor.bind("Copy", TransferHandler.getCopyAction(),
-				"/images/copy.gif"));
-		add(editor.bind("Paste", TransferHandler.getPasteAction(),
-				"/images/paste.gif"));
 
-		addSeparator();
-
-		add(editor.bind("Delete", mxGraphActions.getDeleteAction(),
-				"/images/delete.gif"));
-
-		addSeparator();
-
-		add(editor.bind("Undo", new HistoryAction(true),
-				"/images/undo.gif"));
-		add(editor.bind("Redo", new HistoryAction(false),
-				"/images/redo.gif"));
-
-		addSeparator();
-                */
 
 		// Gets the list of available fonts from the local graphics environment
 		// and adds some frequently used fonts at the beginning of the list
@@ -179,38 +166,10 @@ public class EditorToolBar extends JToolBar
 			}
 		});
 
-		addSeparator();
-                /*
-		add(editor.bind("Bold", new FontStyleAction(true),
-				"/images/bold.gif"));
-		add(editor.bind("Italic", new FontStyleAction(false),
-				"/images/italic.gif"));
-
-		addSeparator();
-
-		add(editor.bind("Left", new KeyValueAction(mxConstants.STYLE_ALIGN,
-				mxConstants.ALIGN_LEFT),
-				"/images/left.gif"));
-		add(editor.bind("Center", new KeyValueAction(mxConstants.STYLE_ALIGN,
-				mxConstants.ALIGN_CENTER),
-				"/images/center.gif"));
-		add(editor.bind("Right", new KeyValueAction(mxConstants.STYLE_ALIGN,
-				mxConstants.ALIGN_RIGHT),
-				"/images/right.gif"));
-
-		addSeparator();
-
-		add(editor.bind("Font", new ColorAction("Font",
-				mxConstants.STYLE_FONTCOLOR),
-				"/images/fontcolor.gif"));
-                
-		add(editor.bind("Stroke", new ColorAction("Stroke",
-				mxConstants.STYLE_STROKECOLOR),
-				"/images/linecolor.gif"));
-              */  
+		addSeparator();  
 		add(editor.bind("Fill", new ColorAction("Fill",
 				mxConstants.STYLE_FILLCOLOR),
-				"/images/fillcolor.gif")).addMouseListener(jButtonToolBarCorListener);
+				"/br/edu/ifam/umlhelper/images/fillcolor.gif")).addMouseListener(jButtonToolBarCorListener);
 
 		addSeparator();
                 

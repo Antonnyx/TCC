@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
  */
-package br.edu.ifam.umlhelper.model;
 
+package br.edu.ifam.umlhelper.model;
 import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
 import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
 import com.mxgraph.io.mxCodec;
@@ -52,7 +52,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import org.w3c.dom.Document;
-import static view.CriarDiagramaTela.numberFormat;
 
 /**
  *
@@ -67,7 +66,7 @@ public class Editor extends JPanel{
     private mxKeyboardHandler keyboardHandler;
     private File currentFile;
     private boolean modified = false;
-    private TelaCriarDiagramaCasoDeUso tela;
+    private static TelaCriarDiagramaCasoDeUso tela;
     
     
     static
@@ -163,7 +162,7 @@ public class Editor extends JPanel{
     public Action bind(String name, final Action action, String iconUrl)
     {
             AbstractAction newAction = new AbstractAction(name, (iconUrl != null) ? new ImageIcon(
-                            Editor.class.getResource(iconUrl)) : null)
+                            getClass().getResource(iconUrl)) : null)
             {
                     public void actionPerformed(ActionEvent e)
                     {
@@ -295,7 +294,7 @@ public class Editor extends JPanel{
 
             if (oldValue != modified)
             {
-                    //updateTitle();
+                    updateTitle();
             }
     }
     
@@ -312,14 +311,14 @@ public class Editor extends JPanel{
                     {
                             title += "*";
                     }
-
-                    frame.setTitle(title + " - " + "newDiagram");
+                    tela.updateTabTitle(title);
+                    //frame.setTitle(title + " - " + "newDiagram");
             }
     }
     
         public Paletas inserirPaleta(String title)
     {
-            Paletas paleta = new Paletas(this.tela);
+            final Paletas paleta = new Paletas(this.tela);
             JTabbedPane painelUML = new JTabbedPane();
             final JScrollPane scrollPane = new JScrollPane(paleta);
             scrollPane
@@ -454,8 +453,51 @@ public class Editor extends JPanel{
 		 */
 		public String getToolTipForCell(Object cell)
 		{
-                    
-                    return "";
+                    mxCell c = (mxCell) cell;
+                   String value = c.getStyle();
+                   String saida = "";
+                   if(value.contains("shape=actor"))
+                   {
+                       saida = "Ator";
+                   
+                   }
+                   else if(value.contains("endArrow=none"))
+                   {
+                       saida = "Agregação";
+                   }
+                   else if(value.contains("ellipse"))
+                   {
+                       saida = "Caso de Uso";
+                   
+                   }
+                   else if(value.contains("align=left")){
+                       saida = "Subsistema";
+                   
+                   }
+                   else if(value.contains("straight")&& value.contains("fontSize"))
+                   {
+                       String decisao = c.getValue().toString();
+                       if(decisao.contains("include")){
+                           saida = "Incluir";
+                       }
+                       else{
+                           saida = "Estender";
+                       }
+                   }
+                   else if(value.contains("label"))
+                   {
+                       saida = "Video";
+                   }
+                   else{
+                       saida = "Geneneralização";
+                   }
+                       
+                   
+                   if(value.contains("actor")){
+                        saida = "Ator";
+                   }
+                    //tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(saida));
+                    return saida;
                     /*
 			String tip = "<html>";
 			mxGeometry geo = getModel().getGeometry(cell);

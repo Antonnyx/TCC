@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifam.umlhelper.view;
+package br.edu.ifam.umlhelper.util;
+
 
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
@@ -53,7 +54,7 @@ public class CriaTelaAjuda {
         for(char c: texto.toCharArray()){
             if(!Character.toString(c).equals(" ") && !Character.toString(c).equals(":")){
                 JLabel label = new JLabel();
-                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/libras_images/letra_"+c+".png"));
+                ImageIcon imageIcon = new ImageIcon(CriaTelaAjuda.class.getResource("/libras_images/letra_"+c+".png"));
                 label.setIcon(imageIcon);
                 panel.add(label);                
             }
@@ -64,12 +65,11 @@ public class CriaTelaAjuda {
     }
     
     public ArrayList<JLabel> getLabelLibras(String texto){
-        texto = texto.toLowerCase();
         ArrayList<JLabel> labels = new ArrayList<JLabel>();
         for(char c: texto.toCharArray()){
             if(!Character.toString(c).equals(" ") && !Character.toString(c).equals(":")){
                 JLabel label = new JLabel();
-                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/libras_images/letra_"+c+".png"));
+                ImageIcon imageIcon = new ImageIcon(CriaTelaAjuda.class.getResource("/libras_images/letra_"+c+".png"));
                 label.setIcon(imageIcon);
                 labels.add(label);
             }

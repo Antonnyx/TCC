@@ -1,8 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
  */
+
 package br.edu.ifam.umlhelper.model;
 
 import br.edu.ifam.umlhelper.view.CriaTelaAjuda;
@@ -57,7 +58,7 @@ public class Paletas extends JPanel{
     {
         this.tela = tela;
         setBackground(new Color(149, 230, 190));
-        setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+        setLayout(new FlowLayout(FlowLayout.LEADING, 4, 4));
         
         
         addMouseListener(new MouseListener() {

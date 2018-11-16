@@ -1,6 +1,9 @@
-/*
- * Copyright (c) 2001-2012, JGraph Ltd
+/* 
+ * 
+ * Copyright (c) 2001-2014, JGraph Ltd
+ * All rights reserved.
  */
+
 package br.edu.ifam.umlhelper.model;
 
 import br.edu.ifam.umlhelper.view.TelaCriarDiagramaCasoDeUso;
@@ -435,8 +438,10 @@ public class EditorActions
 		{
 			if (e.getSource() instanceof mxGraphComponent)
 			{
-				mxGraphComponent graphComponent = (mxGraphComponent) e
-						.getSource();
+                            mxGraphComponent graphComponent = TelaCriarDiagramaCasoDeUso.getEditor()
+							.getGraphComponent();
+				//mxGraphComponent graphComponent = (mxGraphComponent) e.getSource();
+                                
 				PrinterJob pj = PrinterJob.getPrinterJob();
 
 				if (pj.printDialog())

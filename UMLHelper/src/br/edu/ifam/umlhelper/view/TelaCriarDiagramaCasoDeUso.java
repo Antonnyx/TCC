@@ -27,6 +27,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -39,9 +41,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -59,8 +63,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import view.CriarDiagramaTela;
-import view.CriarTelaDiagramaCasoDeUso;
 
 /**
  *
@@ -79,6 +81,8 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private MouseListener cellListener;
     private MouseAdapter closeTabbedPaneListener;
     private boolean painelAcessivelDisponivel = true;
+    private Image frameIcon;
+    
     
     
     
@@ -94,6 +98,9 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
+        
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/br/edu/ifam/umlhelper/images/java.png")));
+        
     }
     
     class MyCloseActionHandler implements ActionListener {
@@ -136,6 +143,10 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         
     }
     
+    public void updateTabTitle(String fileName){
+        painelUML.setTitleAt(painelUML.getSelectedIndex(), fileName);
+    }
+    
     public void addNewGraph(String title){
         Editor ed = new Editor(this);
         painelUML.addTab(title,ed);
@@ -152,7 +163,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     
     private void showCloseTabbedPanePopup(MouseEvent e)
     {
-        MouseEvent fecharEvent = e;
+        final MouseEvent fecharEvent = e;
         JPopupMenu closePopup = new JPopupMenu();
         JMenuItem jMenuFechar = new JMenuItem("Fechar");
         jMenuFechar.addActionListener(new ActionListener() {
@@ -180,6 +191,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     
     }
     
+    
     private void initActionListeners(){
         painelUML.addChangeListener(new ChangeListener() {
             @Override
@@ -205,27 +217,28 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         painelUML.addMouseListener(closeTabbedPaneListener);
         
         jMenuArquivoNovo.addActionListener(editor.bind("Novo", new NewAction(), null));
-        jMenuArquivoNovo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/new.gif")));
+        jMenuArquivoNovo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/new.gif")));
         
         jMenuArquivoAbrir.addActionListener(editor.bind("Abrir", new OpenAction(), null));
-        jMenuArquivoAbrir.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/open.gif")));
+        jMenuArquivoAbrir.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/open.gif")));
         
         jMenuArquivoSalvar.addActionListener(editor.bind("Salvar", new SaveAction(false), null));
-        jMenuArquivoSalvar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/save.gif")));
+        jMenuArquivoSalvar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/save.gif")));
         
         jMenuArquivoSalvarComo.addActionListener(editor.bind("Salvar", new SaveAction(true), null));
-        jMenuArquivoSalvarComo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/saveas.gif")));
+        jMenuArquivoSalvarComo.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/saveas.gif")));
         
         jMenuArquivoSair.addActionListener(editor.bind("Salvar", new ExitAction()));
-        
+        jMenuArquivoImprimir.addActionListener(editor.bind("Imprimir", new EditorActions.PrintAction()));  
+        jMenuArquivoImprimir.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/print.gif")));
         
         jMenuEditarApagar.addActionListener(editor.bind("Apagar", mxGraphActions.getDeleteAction()));
-        jMenuEditarApagar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/delete.gif")));
+        jMenuEditarApagar.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/delete.gif")));
         
         jMenuEditarEditar.addActionListener(editor.bind("Editar", mxGraphActions.getEditAction()));
         
         jMenuEditarDesfazer.addActionListener(editor.bind("Desfazer", new HistoryAction(true)));
-        jMenuEditarDesfazer.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam//umlhelper/images/undo.gif")));
+        jMenuEditarDesfazer.setIcon(new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/undo.gif")));
         
         jMenuEditarDesfazer.addActionListener(editor.bind("Editar", mxGraphActions.getEditAction()));
         
@@ -259,17 +272,20 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 	});
         paletaUML.addTemplate("Ator",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/actor.png")),
                 "shape=actor;fillColor=#FFFF99;gradientColor=#FFFF99;fontSize=20", 120, 160, "");
-        paletaUML.addEdgeTemplate("Agregação",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/associacao.png")),
+        paletaUML.addEdgeTemplate("Agregação",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/associacao.png")),
                 "straight;strokeWidth=4;endArrow=none", 120, 120, "");  
-        paletaUML.addTemplate("Caso de Uso",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/ellipse.png")),"ellipse;fillColor=#FFFF99;gradientColor=#FFFF99;fontSize=20", 160, 100, "");
-        paletaUML.addEdgeTemplate("Incluir",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/include.png")),
+        paletaUML.addTemplate("Caso de Uso",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/ellipse.png")),"ellipse;fillColor=#FFFF99;gradientColor=#FFFF99;fontSize=20", 160, 100, "");
+        paletaUML.addEdgeTemplate("Incluir",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/include.png")),
                 "straight;dashed=1;strokeWidth=4;fontSize=20", 120, 120, "<<include>>");
-        paletaUML.addEdgeTemplate("Estender",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/extend.png")),
+        paletaUML.addEdgeTemplate("Estender",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/extend.png")),
                 "straight;dashed=1;strokeWidth=4;fontSize=20", 120, 120, "<<extend>>");
-        paletaUML.addEdgeTemplate("Generalizar",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/straight.png")),
+        paletaUML.addEdgeTemplate("Generalizar",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/straight.png")),
                 "straight;strokeWidth=4", 120, 120, "");
-        paletaUML.addTemplate("Subsistema",new ImageIcon(CriarDiagramaTela.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
-                "fillColor=#FFFFFF;gradientColor=#FFFFFF;verticalAlign=top;align=left;fontSize=20", 120, 120, "<<Subsystem>>");
+        paletaUML.addTemplate("Subsistema",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
+                "fillColor=#FFFFFF;gradientColor=#FFFFFF;verticalAlign=top;align=left;fontSize=20", 120, 120, "<<Subsistema>>");
+        paletaUML.addTemplate("Video",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
+						"label;image=/br/edu/ifam/umlhelper/images/video.png;fontSize=25",
+						130, 50, "Video");
         painelPaletas.add(paletaUML);
         painelPaletas.setTitleAt(0, "UML");
         
@@ -377,6 +393,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         jMenuArquivoSalvar.addMouseListener(jMenuItemMouseListener);
         jMenuArquivoSalvarComo.addMouseListener(jMenuItemMouseListener);
         jMenuArquivoSair.addMouseListener(jMenuItemMouseListener);
+        jMenuArquivoImprimir.addMouseListener(jMenuItemMouseListener);
         
         jMenuEditarDesfazer.addMouseListener(jMenuItemMouseListener);
         jMenuEditarEditar.addMouseListener(jMenuItemMouseListener);
@@ -438,7 +455,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     //Método que devolve a estrutura de uma Paleta
     public Paletas inserirPaleta(String title)
     {
-            Paletas paleta = new Paletas(this);
+            final Paletas paleta = new Paletas(this);
             JTabbedPane painelUML = new JTabbedPane();
             final JScrollPane scrollPane = new JScrollPane(paleta);
             scrollPane
@@ -469,13 +486,13 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CriarTelaDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCriarDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            Logger.getLogger(CriarTelaDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCriarDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(CriarTelaDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCriarDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(CriarTelaDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCriarDiagramaCasoDeUso.class.getName()).log(Level.SEVERE, null, ex);
         }
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -501,6 +518,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         jMenuArquivoAbrir = new javax.swing.JMenuItem();
         jMenuArquivoSalvar = new javax.swing.JMenuItem();
         jMenuArquivoSalvarComo = new javax.swing.JMenuItem();
+        jMenuArquivoImprimir = new javax.swing.JMenuItem();
         jMenuArquivoSair = new javax.swing.JMenuItem();
         jMenuEditar = new javax.swing.JMenu();
         jMenuEditarDesfazer = new javax.swing.JMenuItem();
@@ -515,7 +533,6 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1000));
 
-        painelAcessivel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         painelAcessivel.setPreferredSize(new java.awt.Dimension(1902, 104));
 
         javax.swing.GroupLayout painelAcessivelLayout = new javax.swing.GroupLayout(painelAcessivel);
@@ -526,10 +543,8 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         );
         painelAcessivelLayout.setVerticalGroup(
             painelAcessivelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 104, Short.MAX_VALUE)
         );
-
-        painelFerramentas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         painelFerramentasToolBar.setRollover(true);
 
@@ -539,7 +554,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
             painelFerramentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelFerramentasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+                .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
                 .addGap(1188, 1188, 1188))
         );
         painelFerramentasLayout.setVerticalGroup(
@@ -548,12 +563,6 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 14, Short.MAX_VALUE))
         );
-
-        painelPaletas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        painelUML.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -579,6 +588,9 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 
         jMenuArquivoSalvarComo.setText("Salvar Como");
         jMenuArquivo.add(jMenuArquivoSalvarComo);
+
+        jMenuArquivoImprimir.setText("Imprimir");
+        jMenuArquivo.add(jMenuArquivoImprimir);
 
         jMenuArquivoSair.setText("Sair");
         jMenuArquivo.add(jMenuArquivoSair);
@@ -659,7 +671,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(painelPaletas, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(painelUML))
                 .addGap(733, 733, 733))
@@ -718,6 +730,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaCriarDiagramaCasoDeUso().setVisible(true);
+                
             }
         });
     }
@@ -726,6 +739,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuAjuda;
     private javax.swing.JMenu jMenuArquivo;
     private javax.swing.JMenuItem jMenuArquivoAbrir;
+    private javax.swing.JMenuItem jMenuArquivoImprimir;
     private javax.swing.JMenuItem jMenuArquivoNovo;
     private javax.swing.JMenuItem jMenuArquivoSair;
     private javax.swing.JMenuItem jMenuArquivoSalvar;
