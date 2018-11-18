@@ -127,7 +127,7 @@ public class EditorPopupMenu extends JPopupMenu
 						.getRemoveVideoAction(),
 						null))
 				.addMouseListener(jMenuItemMouseListener);;
-                add(editor.bind("Tocar Video", tocarVideoAction ,null)).addMouseListener(jMenuItemMouseListener);
+                add(editor.bind("Exibir Video", tocarVideoAction ,null)).addMouseListener(jMenuItemMouseListener);
                 
                 addSeparator();
                 add(
@@ -142,7 +142,7 @@ public class EditorPopupMenu extends JPopupMenu
 						null))
 				.addMouseListener(jMenuItemMouseListener);
                 
-                add(editor.bind("Tocar Video Libras", tocarVideoLibrasAction ,null)).addMouseListener(jMenuItemMouseListener);                
+                add(editor.bind("Exibir Video Libras", tocarVideoLibrasAction ,null)).addMouseListener(jMenuItemMouseListener);                
 
 		addSeparator();
                 /*
