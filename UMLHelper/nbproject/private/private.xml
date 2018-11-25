@@ -11,6 +11,11 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/br/edu/ifam/umlhelper/model/EditorToolBar.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/br/edu/ifam/umlhelper/model/EditorActions.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/br/edu/ifam/umlhelper/model/EditorPopupMenu.java</file>
+            <file>file:/C:/Users/Antonio/Documents/GitHub/TCCI/UMLHelper/src/teste/TestaCopiarArquivo.java</file>
+        </group>
     </open-files>
 </project-private>

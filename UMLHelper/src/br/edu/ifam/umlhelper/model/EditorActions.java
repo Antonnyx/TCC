@@ -75,6 +75,8 @@ import com.mxgraph.util.png.mxPngEncodeParam;
 import com.mxgraph.util.png.mxPngImageEncoder;
 import com.mxgraph.util.png.mxPngTextDecoder;
 import com.mxgraph.view.mxGraph;
+import java.nio.channels.FileChannel;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -486,6 +488,27 @@ public class EditorActions
 		/**
 		 * 
 		 */
+                
+                //metodo para copiar arquivos
+                public void copyFile(File source, File destination) throws IOException {
+                    if (destination.exists()){
+                        destination.delete();
+                    }
+                    FileChannel sourceChannel = null;
+                    FileChannel destinationChannel = null;
+                    try {
+                        sourceChannel = new FileInputStream(source).getChannel();
+                        destinationChannel = new FileOutputStream(destination).getChannel();
+                        sourceChannel.transferTo(0, sourceChannel.size(),
+                                destinationChannel);
+                    } finally {
+                        if (sourceChannel != null && sourceChannel.isOpen())
+                            sourceChannel.close();
+                        if (destinationChannel != null && destinationChannel.isOpen())
+                            destinationChannel.close();
+                   }
+               }
+                
 		public SaveAction(boolean showDialog)
 		{
 			this.showDialog = showDialog;
@@ -701,6 +724,25 @@ public class EditorActions
 					else if (ext.equalsIgnoreCase("mxe")
 							|| ext.equalsIgnoreCase("xml"))
 					{
+                                                System.out.println("Arquivo escolhido: " + filename);
+                                                System.out.println("Path: " + FilenameUtils.getPath(filename));
+                                                String diretorioSalvar = "C:\\"+FilenameUtils.getPath(filename);
+                                                
+                                                mxGraph g = editor.getGraphComponent().getGraph();
+                                                System.out.println("Elementos : " + g.getSelectionCells().length);
+                                                for(Object obj: g.getSelectionCells()){
+                                                    mxCell cell = (mxCell) obj;
+                                                    if(!cell.getVideoPath().equals("")){
+                                                        String file = FilenameUtils.getBaseName(cell.getVideoPath()) + "." + FilenameUtils.getExtension(cell.getVideoPath());
+                                                        copyFile(new File(cell.getVideoPath()) , new File(diretorioSalvar + file));
+                                                        cell.setVideoPath(file);
+                                                    }
+                                                    if(!cell.getVideoPathLibras().equals("")){
+                                                        String file = FilenameUtils.getBaseName(cell.getVideoPathLibras()) + "." + FilenameUtils.getExtension(cell.getVideoPathLibras());
+                                                        copyFile(new File(cell.getVideoPathLibras()) , new File(diretorioSalvar + file));
+                                                        cell.setVideoPathLibras(file);
+                                                    }
+                                                }
 						mxCodec codec = new mxCodec();
 						String xml = mxXmlUtils.getXml(codec.encode(graph
 								.getModel()));
@@ -709,6 +751,7 @@ public class EditorActions
 
 						editor.setModified(false);
 						editor.setCurrentFile(new File(filename));
+                                                
 					}
 					else if (ext.equalsIgnoreCase("txt"))
 					{
