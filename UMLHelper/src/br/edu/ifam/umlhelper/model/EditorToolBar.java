@@ -43,6 +43,7 @@ import com.mxgraph.view.mxGraphView;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class EditorToolBar extends JToolBar
 {
@@ -69,7 +70,7 @@ public class EditorToolBar extends JToolBar
         private MouseListener jButtonToolBarTamanhoListener;
         private MouseListener jButtonToolBarCorListener;
         private MouseListener jButtonToolBarAmpliarListener;
-        
+        private ArrayList<JLabel> lblPadrao = CriaTelaAjuda.getLabelPadrao();
 	/**
 	 * 
 	 */
@@ -286,13 +287,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {         
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Novo"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             
@@ -313,13 +316,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Abrir"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarSalvarListener = new MouseListener() {
@@ -339,13 +344,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Salvar"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarImprimirListener = new MouseListener() {
@@ -365,13 +372,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Imprimir"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarApagarListener = new MouseListener() {
@@ -391,13 +400,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Apagar"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarDesfazerListener = new MouseListener() {
@@ -417,13 +428,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Desfazer"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarFonteListener = new MouseListener() {
@@ -443,13 +456,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Fonte"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarTamanhoListener = new MouseListener() {
@@ -469,13 +484,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Tamanho"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarCorListener = new MouseListener() {
@@ -495,13 +512,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Cor"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             jButtonToolBarAmpliarListener = new MouseListener() {
@@ -521,13 +540,15 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {                   
+                public void mouseEntered(MouseEvent e) {   
+                    tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Ampliar"));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     tela.limparPainelAcessivel();
+                    tela.atualizarPainelAcessivel(lblPadrao);
                 }
             };
             

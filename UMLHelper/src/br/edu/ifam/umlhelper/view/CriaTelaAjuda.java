@@ -77,5 +77,13 @@ public class CriaTelaAjuda {
         }
         return labels;
     }
+    public static ArrayList<JLabel> getLabelPadrao(){
+        ArrayList<JLabel> labels = new ArrayList<JLabel>();
+        JLabel label = new JLabel();
+        ImageIcon imageIcon = new ImageIcon(CriaTelaAjuda.class.getResource("/libras_images/icon_libras.png"));
+        label.setIcon(imageIcon);
+        labels.add(label);
+        return labels;
+    }
     
 }

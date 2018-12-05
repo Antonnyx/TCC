@@ -19,11 +19,13 @@ import com.mxgraph.view.mxGraph;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -39,7 +41,7 @@ public class EditorPopupMenu extends JPopupMenu
         private ImageIcon naoTemIcon = new ImageIcon(EditorPopupMenu.class.getResource("/br/edu/ifam/umlhelper/images/nao_ter.png"));
         private MouseListener jMenuItemMouseListener;
         private Editor editor;
-
+        private ArrayList<JLabel> lblPadrao = CriaTelaAjuda.getLabelPadrao();
 	public EditorPopupMenu(final Editor editor)
 	{
             
@@ -320,6 +322,7 @@ public class EditorPopupMenu extends JPopupMenu
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                editor.getTela().limparPainelAcessivel();
                 JMenuItem jMenuItem = (JMenuItem) e.getComponent();
                 editor.getTela().atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jMenuItem.getText().toLowerCase()));
             }
@@ -327,6 +330,7 @@ public class EditorPopupMenu extends JPopupMenu
             @Override
             public void mouseExited(MouseEvent e) {
                 editor.getTela().limparPainelAcessivel();
+                editor.getTela().atualizarPainelAcessivel(lblPadrao);
             }
         }; 
             

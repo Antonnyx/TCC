@@ -74,7 +74,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
      * Creates new form TelaCriarDiagramaCasoDeUso
      */
     private static Editor editor;
-    private String tituloTela = "Criar Diagrama de Caso de Uso";
+    private String tituloTela = "UML Libras";
     private MouseListener jMenuMouseListener;
     private MouseListener jMenuItemMouseListener;
     private MouseListener jLabelMouseListener;
@@ -82,7 +82,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private MouseAdapter closeTabbedPaneListener;
     private boolean painelAcessivelDisponivel = true;
     private Image frameIcon;
-    
+    private ArrayList<JLabel> lblPadrao = CriaTelaAjuda.getLabelPadrao();
     
     
     
@@ -99,7 +99,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
         
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/br/edu/ifam/umlhelper/images/java.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/br/edu/ifam/umlhelper/images/icon_uml.png")));
         
     }
     
@@ -283,11 +283,12 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 "straight;strokeWidth=4", 120, 120, "");
         paletaUML.addTemplate("Subsistema",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
                 "fillColor=#FFFFFF;gradientColor=#FFFFFF;verticalAlign=top;align=left;fontSize=20", 120, 120, "<<Subsistema>>");
-        paletaUML.addTemplate("Video",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/rectangle.png")),
+        paletaUML.addTemplate("Video",new ImageIcon(TelaCriarDiagramaCasoDeUso.class.getResource("/br/edu/ifam/umlhelper/images/video.png")),
 						"label;image=/br/edu/ifam/umlhelper/images/video.png;fontSize=25",
 						130, 50, "Video");
         painelPaletas.add(paletaUML);
         painelPaletas.setTitleAt(0, "UML");
+        atualizarPainelAcessivel(lblPadrao);
         
     }
     
@@ -314,6 +315,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                limparPainelAcessivel();
                 JMenu jMenu = (JMenu) e.getComponent();
                 atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jMenu.getText().toLowerCase()));
             }
@@ -321,6 +323,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 limparPainelAcessivel();
+                atualizarPainelAcessivel(lblPadrao);
             }
         };
         
@@ -342,6 +345,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                limparPainelAcessivel();
                 JMenuItem jMenuItem = (JMenuItem) e.getComponent();
                 atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jMenuItem.getText().toLowerCase()));
             }
@@ -349,6 +353,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 limparPainelAcessivel();
+                atualizarPainelAcessivel(lblPadrao);
             }
         };   
         
@@ -370,6 +375,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                limparPainelAcessivel();
                 JLabel jLabel = (JLabel) e.getComponent();
                 atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jLabel.getText().toLowerCase()));
             }
@@ -377,6 +383,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 limparPainelAcessivel();
+                atualizarPainelAcessivel(lblPadrao);
             }
         };         
         
@@ -512,6 +519,8 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         painelPaletas = new javax.swing.JTabbedPane();
         painelUML = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
+        labelIcon = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuArquivo = new javax.swing.JMenu();
         jMenuArquivoNovo = new javax.swing.JMenuItem();
@@ -564,15 +573,33 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addGap(0, 14, Short.MAX_VALUE))
         );
 
+        labelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/ifam/umlhelper/images/icone_png_uml.png"))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        jLabel1.setText("LIBRAS");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelIcon)
+                        .addGap(62, 62, 62))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(101, 101, 101))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 482, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(labelIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         jMenuArquivo.setText("Arquivo");
@@ -653,7 +680,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(painelPaletas, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(painelPaletas)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(30, 30, 30)
                         .addComponent(painelUML))
@@ -671,7 +698,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(painelPaletas, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(painelUML))
                 .addGap(733, 733, 733))
@@ -736,6 +763,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenuAjuda;
     private javax.swing.JMenu jMenuArquivo;
     private javax.swing.JMenuItem jMenuArquivoAbrir;
@@ -754,6 +782,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuOpcoesDatilologiaOn;
     private javax.swing.JMenuItem jMenuSobre;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelIcon;
     private javax.swing.JPanel painelAcessivel;
     private javax.swing.JPanel painelFerramentas;
     private javax.swing.JToolBar painelFerramentasToolBar;

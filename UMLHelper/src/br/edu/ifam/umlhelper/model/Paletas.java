@@ -36,6 +36,7 @@ import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -53,6 +54,7 @@ public class Paletas extends JPanel{
     private Color gradientColor = new Color(117, 195, 173);
     private TelaCriarDiagramaCasoDeUso tela;
     private MouseListener jLabelMouseListener;
+    private ArrayList<JLabel> lblPadrao = CriaTelaAjuda.getLabelPadrao();
     
     public Paletas(TelaCriarDiagramaCasoDeUso tela)
     {
@@ -250,6 +252,7 @@ public class Paletas extends JPanel{
                      */
                     public void mouseEntered(MouseEvent e)
                     {
+                        tela.limparPainelAcessivel();
                         JLabel jLabel = (JLabel) e.getComponent();
                         tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras(jLabel.getText().toLowerCase()));   
                     }
@@ -261,6 +264,7 @@ public class Paletas extends JPanel{
                     public void mouseExited(MouseEvent e)
                     {
                         tela.limparPainelAcessivel();
+                        tela.atualizarPainelAcessivel(lblPadrao);
                     }
 
                     /*
