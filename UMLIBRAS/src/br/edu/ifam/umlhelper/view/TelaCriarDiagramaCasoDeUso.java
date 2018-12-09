@@ -413,6 +413,15 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         
         jMenuAjuda.addMouseListener(jMenuMouseListener);
         jMenuSobre.addMouseListener(jMenuItemMouseListener);
+        jMenuCasoDeUso.addMouseListener(jMenuMouseListener);
+        jMenuItemAtor.addMouseListener(jMenuItemMouseListener);
+        jMenuItemAgregacao.addMouseListener(jMenuItemMouseListener);
+        jMenuItemCasoDeUso.addMouseListener(jMenuItemMouseListener);
+        jMenuItemEstender.addMouseListener(jMenuItemMouseListener);
+        jMenuItemGeneralizar.addMouseListener(jMenuItemMouseListener);
+        jMenuItemIncluir.addMouseListener(jMenuItemMouseListener);
+        jMenuItemSubsistema.addMouseListener(jMenuItemMouseListener);
+        jMenuItemVideo.addMouseListener(jMenuItemMouseListener);
         
     }
     
