@@ -168,11 +168,13 @@ public class Editor extends JPanel{
                     {
                             action.actionPerformed(new ActionEvent(getGraphComponent(), e
                                             .getID(), e.getActionCommand()));
+                            
                     }
+                    
             };
-
-            newAction.putValue(Action.SHORT_DESCRIPTION, action.getValue(Action.SHORT_DESCRIPTION));
-
+            
+            newAction.putValue(Action.SHORT_DESCRIPTION, name);
+            
             return newAction;
     }
     

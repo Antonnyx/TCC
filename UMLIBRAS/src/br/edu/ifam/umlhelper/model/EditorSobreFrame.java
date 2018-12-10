@@ -32,6 +32,7 @@ import javax.swing.KeyStroke;
 
 import com.mxgraph.util.mxResources;
 import com.mxgraph.view.mxGraph;
+import javax.swing.ImageIcon;
 
 public class EditorSobreFrame extends JDialog
 {
@@ -103,10 +104,24 @@ public class EditorSobreFrame extends JDialog
                         + "com acessibilidade em Libras"));
 		content.add(new JLabel(" "));
 
-		content.add(new JLabel("UMLHelper Version " + 1.0));
-		content.add(new JLabel("Copyright (C) Antonio Fonseca"));
-                content.add(new JLabel("Copyright (C) IFAM www.ifam.edu.br"));
-		
+		content.add(new JLabel("UMLibras Version " + 1.0));
+                content.add(new JLabel("Autores:"));
+		content.add(new JLabel("Antonio José BarbosaFonseca - antoniojfns@gmail.com"));
+                content.add(new JLabel("Prof. Msc. Sérgio Augusto C. Bezerra - sergio.bezerra@ifam.edu.br"));
+                content.add(new JLabel("Prof. Msc. Emmerson Santa Rita da Silva - emmerson.silva@ifam.edu.br"));
+                content.add(new JLabel(" "));
+                content.add(new JLabel("Apoio:"));
+                content.add(new JLabel("DAIC - Departamento Acadêmico de Informação e Comunicação"));
+                ImageIcon ifamIcon = new ImageIcon(Paletas.class.getResource("/br/edu/ifam/umlhelper/images/icon_ifam2.png"));
+                ImageIcon apoemaIcon = new ImageIcon(Paletas.class.getResource("/br/edu/ifam/umlhelper/images/icon_apoema2.png"));
+                JLabel ifamLabel = new JLabel(ifamIcon);
+                JLabel apoemaLabel = new JLabel(apoemaIcon);
+                content.add(new JLabel(" "));
+                content.add(new JLabel("IFAM"));
+		content.add(ifamLabel);
+                content.add(new JLabel(" "));
+                content.add(new JLabel("APOEMA"));
+		content.add(apoemaLabel);
 		content.add(new JLabel(" "));
 
 		try
@@ -153,7 +168,7 @@ public class EditorSobreFrame extends JDialog
 		getRootPane().setDefaultButton(closeButton);
                 setLocationRelativeTo(null);
 		setResizable(false);
-		setSize(750, 400);
+		setSize(750, 800);
 	}
 
 	/**

@@ -44,6 +44,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JToolTip;
 
 public class EditorToolBar extends JToolBar
 {
@@ -87,27 +88,27 @@ public class EditorToolBar extends JToolBar
 		setFloatable(false);
                 
                 
-		add(editor.bind("New", new NewAction(),
+		add(editor.bind("Novo", new NewAction(),
 				"/br/edu/ifam/umlhelper/images/new.gif")).addMouseListener(jButtonToolBarNovoListener);
                 addSeparator();
-		add(editor.bind("Open", new OpenAction(),
+		add(editor.bind("Abrir", new OpenAction(),
 				"/br/edu/ifam/umlhelper/images/open.gif")).addMouseListener(jButtonToolBarAbrirListener);
                 addSeparator();
-		add(editor.bind("Save", new SaveAction(false),
+		add(editor.bind("Salvar", new SaveAction(false),
 				"/br/edu/ifam/umlhelper/images/save.gif")).addMouseListener(jButtonToolBarSalvarListener);
 
 		addSeparator();
 
-		add(editor.bind("Print", new PrintAction(),
+		add(editor.bind("Imprimir", new PrintAction(),
 				"/br/edu/ifam/umlhelper/images/print.gif")).addMouseListener(jButtonToolBarImprimirListener);
 
 		addSeparator();
-                add(editor.bind("Delete", mxGraphActions.getDeleteAction(),
+                add(editor.bind("Deletar", mxGraphActions.getDeleteAction(),
 				"/br/edu/ifam/umlhelper/images/delete.gif")).addMouseListener(jButtonToolBarApagarListener);
 
 		addSeparator();
 
-		add(editor.bind("Undo", new HistoryAction(true),
+		add(editor.bind("Desfazer", new HistoryAction(true),
 				"/br/edu/ifam/umlhelper/images/undo.gif")).addMouseListener(jButtonToolBarDesfazerListener);
                 addSeparator();
 
@@ -126,6 +127,7 @@ public class EditorToolBar extends JToolBar
 		fontCombo.setMinimumSize(new Dimension(120, 0));
 		fontCombo.setPreferredSize(new Dimension(120, 0));
 		fontCombo.setMaximumSize(new Dimension(120, 100));
+                fontCombo.setToolTipText("Fonte");
 		add(fontCombo).addMouseListener(jButtonToolBarFonteListener);
                 addSeparator();
 		fontCombo.addActionListener(new ActionListener()
@@ -152,6 +154,7 @@ public class EditorToolBar extends JToolBar
 		sizeCombo.setMinimumSize(new Dimension(65, 0));
 		sizeCombo.setPreferredSize(new Dimension(65, 0));
 		sizeCombo.setMaximumSize(new Dimension(65, 100));
+                sizeCombo.setToolTipText("Tamanho");
 		add(sizeCombo).addMouseListener(jButtonToolBarTamanhoListener);
 
 		sizeCombo.addActionListener(new ActionListener()
@@ -168,7 +171,7 @@ public class EditorToolBar extends JToolBar
 		});
 
 		addSeparator();  
-		add(editor.bind("Fill", new ColorAction("Fill",
+		add(editor.bind("Cores", new ColorAction("Fill",
 				mxConstants.STYLE_FILLCOLOR),
 				"/br/edu/ifam/umlhelper/images/fillcolor.gif")).addMouseListener(jButtonToolBarCorListener);
 
@@ -184,6 +187,7 @@ public class EditorToolBar extends JToolBar
 		zoomCombo.setPreferredSize(new Dimension(75, 0));
 		zoomCombo.setMaximumSize(new Dimension(75, 100));
 		zoomCombo.setMaximumRowCount(9);
+                zoomCombo.setToolTipText("Ampliar");
 		add(zoomCombo).addMouseListener(jButtonToolBarAmpliarListener);
 
 		// Sets the zoom in the zoom combo the current value
@@ -268,9 +272,13 @@ public class EditorToolBar extends JToolBar
 				}
 			}
 		});
+        
 	}
         private void initToolBarListener(){
             jButtonToolBarNovoListener = new MouseListener() {
+                
+                
+                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     
@@ -287,7 +295,8 @@ public class EditorToolBar extends JToolBar
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {         
+                public void mouseEntered(MouseEvent e) {     
+                    
                     tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(new CriaTelaAjuda().getLabelLibras("Novo"));
                 }
@@ -297,9 +306,12 @@ public class EditorToolBar extends JToolBar
                     tela.limparPainelAcessivel();
                     tela.atualizarPainelAcessivel(lblPadrao);
                 }
+                
             };
             
+            
             jButtonToolBarAbrirListener = new MouseListener() {
+                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     

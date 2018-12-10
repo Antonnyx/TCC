@@ -49,6 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -459,10 +460,11 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private void inserirBarraFerramentas(){
         EditorToolBar ferramentas = new EditorToolBar(editor, JToolBar.HORIZONTAL, this);
         painelFerramentasToolBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        
         for(Component c: ferramentas.getComponents()){
             painelFerramentasToolBar.add(c);
         }
-        painelFerramentas.setEnabled(false);
+       // painelFerramentas.setEnabled(false);
         painelFerramentasToolBar.setEnabled(false);
         
 
@@ -525,13 +527,14 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private void initComponents() {
 
         painelAcessivel = new javax.swing.JPanel();
-        painelFerramentas = new javax.swing.JPanel();
-        painelFerramentasToolBar = new javax.swing.JToolBar();
         painelPaletas = new javax.swing.JTabbedPane();
         painelUML = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         labelIcon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        painelFerramentasToolBar = new javax.swing.JToolBar();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuArquivo = new javax.swing.JMenu();
         jMenuArquivoNovo = new javax.swing.JMenuItem();
@@ -560,6 +563,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         jMenuItemVideo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setSize(new java.awt.Dimension(1920, 1000));
 
         painelAcessivel.setPreferredSize(new java.awt.Dimension(1902, 104));
@@ -572,25 +576,7 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
         );
         painelAcessivelLayout.setVerticalGroup(
             painelAcessivelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 104, Short.MAX_VALUE)
-        );
-
-        painelFerramentasToolBar.setRollover(true);
-
-        javax.swing.GroupLayout painelFerramentasLayout = new javax.swing.GroupLayout(painelFerramentas);
-        painelFerramentas.setLayout(painelFerramentasLayout);
-        painelFerramentasLayout.setHorizontalGroup(
-            painelFerramentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelFerramentasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
-                .addGap(1188, 1188, 1188))
-        );
-        painelFerramentasLayout.setVerticalGroup(
-            painelFerramentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelFerramentasLayout.createSequentialGroup()
-                .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 14, Short.MAX_VALUE))
+            .addGap(0, 78, Short.MAX_VALUE)
         );
 
         labelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/ifam/umlhelper/images/uml_2.png"))); // NOI18N
@@ -622,6 +608,13 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                 .addContainerGap(259, Short.MAX_VALUE))
         );
 
+        painelFerramentasToolBar.setBorder(null);
+        painelFerramentasToolBar.setRollover(true);
+
+        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setForeground(new java.awt.Color(153, 255, 255));
+
+        jMenuArquivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenuArquivo.setText("Arquivo");
 
         jMenuArquivoNovo.setText("Novo");
@@ -782,25 +775,31 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(painelUML))
-                    .addComponent(painelFerramentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(painelAcessivel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(painelUML, javax.swing.GroupLayout.DEFAULT_SIZE, 1534, Short.MAX_VALUE))
+                    .addComponent(painelAcessivel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
+                    .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(painelAcessivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(painelFerramentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(painelAcessivel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(painelFerramentasToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(painelPaletas, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(painelUML))
-                .addGap(733, 733, 733))
+                .addGap(734, 734, 734))
         );
 
         pack();
@@ -930,9 +929,10 @@ public class TelaCriarDiagramaCasoDeUso extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuOpcoesDatilologiaOn;
     private javax.swing.JMenuItem jMenuSobre;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelIcon;
     private javax.swing.JPanel painelAcessivel;
-    private javax.swing.JPanel painelFerramentas;
     private javax.swing.JToolBar painelFerramentasToolBar;
     private javax.swing.JTabbedPane painelPaletas;
     private javax.swing.JTabbedPane painelUML;
